@@ -1,4 +1,4 @@
-import ResponseStatusInterface from '../../interfaces/configurations/ResponseStatus';
+import ResponseStatusInterface from '../../../interfaces/configurations/ResponseStatus';
 
 export enum StatusEnum {
     OK = 200,
@@ -13,7 +13,7 @@ export enum StatusEnum {
     INTERNAL_SERVER_ERROR = 500,
 }
 
-const responseStatus: Record<string, ResponseStatusInterface> = {
+const RESPONSE_STATUS_CODES: Record<string, ResponseStatusInterface> = {
     OK: {
         statusCode: StatusEnum.OK,
         message: 'Ok',
@@ -56,4 +56,4 @@ const responseStatus: Record<string, ResponseStatusInterface> = {
     },
 };
 
-export default responseStatus;
+export default RESPONSE_STATUS_CODES;
