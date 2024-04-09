@@ -1,0 +1,83 @@
+paths:
+  /users/:
+    get:
+      tags:
+        - User
+      summary: gets all users
+      produces:
+        - application/json
+      responses:
+        200:
+          description: successful
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  statusCode:
+                    type: number
+                    example: 200
+                  message:
+                    type: string
+                    example: Ok
+                  data: 
+                    type: array
+                    items:
+                      type: string
+                      example:
+                        - Ana
+                        - Maria
+                        - Juan
+                        - Pedro
+        500:
+          description: General error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  statusCode:
+                    type: number
+                    example: 500
+                  message:
+                    type: string
+                    example: This error message should be displayed with some error message
+                  error: 
+                    type: object
+                    properties:
+                      code:
+                        type: number
+                        example: 100
+                      message:
+                        type: string
+                        example: "General unknown error"
+
+#     post:
+#       tags:
+#         - User
+#       summary: creates a new user
+#       produces:
+#         - application/json
+#       parameters:
+#         - in: body
+#           name: sign up
+#           description: It enables a user to create an account
+#           required: false
+#           schema:
+#             $ref: "#/definitions/signUp"
+#       responses:
+#         201:
+#           description: An object with user details
+# definitions:
+#   signUp:
+#     type: object
+#     properties:
+#       user:
+#         type: object
+#         properties:
+#           username:
+#             type: string
+#           email:
+#             type: string
+#           password:
+#             type: string

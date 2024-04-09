@@ -1,7 +1,7 @@
 import express from 'express';
 import UserController from '../controllers/users';
-import ResponseStatus from '../resources/configurations/ResponseStatus';
-import ResponseClass from '../resources/configurations/ResponseClass';
+import ResponseStatus from '../resources/configurations/constants/ResponseStatusCodes';
+import ResponseClass from '../resources/configurations/classes/ResponseClass';
 const router = express.Router();
 
 const userController = UserController.getInstance();
