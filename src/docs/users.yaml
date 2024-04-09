@@ -29,6 +29,28 @@ paths:
                         - Maria
                         - Juan
                         - Pedro
+        500:
+          description: General error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  statusCode:
+                    type: number
+                    example: 500
+                  message:
+                    type: string
+                    example: This error message should be displayed with some error message
+                  error: 
+                    type: object
+                    properties:
+                      code:
+                        type: number
+                        example: 100
+                      message:
+                        type: string
+                        example: "General unknown error"
 
 #     post:
 #       tags:
