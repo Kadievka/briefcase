@@ -11,7 +11,7 @@
     "strict": true,
     "forceConsistentCasingInFileNames": true,
   },
-  "include": ["src/**/*.ts", "tests/unit/mocks/Users.ts"],
+  "include": ["src/**/*.ts", "src/resources/mocks/Users.ts"],
   "exclude": [
     "node_modules"
   ]

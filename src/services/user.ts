@@ -94,7 +94,7 @@ export default class UserService {
     }
 
     /**
-     * Deletes a user by email.
+     * Deletes an user by email.
      * @returns Promise<UserInterface>
      */
     async deleteUserByEmail(email: string): Promise<void> {

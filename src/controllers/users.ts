@@ -33,4 +33,12 @@ export default class UserController {
     async createUser(req: core.Request): Promise<UserProfile> {
         return await this.userService.createUser(req.body);
     }
+
+    /**
+     * Calls delete user by email service.
+     * @returns Promise<void> - void
+     */
+    async deleteUser(req: core.Request): Promise<void> {
+        return await this.userService.deleteUserByEmail(req.body.email);
+    }
 }

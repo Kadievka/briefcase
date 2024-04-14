@@ -1,4 +1,4 @@
-import User from '../../../src/interfaces/User';
+import User from '../../interfaces/User';
 
 const testPass = '123456789';
 

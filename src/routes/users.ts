@@ -17,7 +17,7 @@ router.post('/', function (req, res) {
 });
 
 router.delete('/', function (req, res) {
-    response.send(req, res, ResponseStatus.NO_CONTENT, 'createUser');
+    response.send(req, res, ResponseStatus.NO_CONTENT, 'deleteUser');
 });
 
 module.exports = router;
