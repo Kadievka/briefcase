@@ -7,7 +7,7 @@ describe('BaseErrorClass Unit Tests', () => {
     describe('constructor', () => {
         it('should create a new ResponseClass', () => {
             const baseErrorInterface: BaseError = {...INTERNAL_ERROR_CODES.GENERAL_UNKNOWN};
-            const baseErrorClass: BaseErrorClass = new BaseErrorClass(baseErrorInterface.code, baseErrorInterface.message, baseErrorInterface.statusCode);
+            const baseErrorClass: BaseErrorClass = new BaseErrorClass(baseErrorInterface);
 
             expect(baseErrorClass).toBeInstanceOf(BaseErrorClass);
             expect(baseErrorClass).toHaveProperty('code', 100);

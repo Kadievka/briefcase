@@ -1,6 +1,7 @@
 // Swagger imports
 import swaggerUi from 'swagger-ui-express';
 import swaggerJSDoc from 'swagger-jsdoc';
+import bodyParser from 'body-parser';
 
 // APP imports
 import express from 'express';
@@ -29,6 +30,9 @@ const swaggerSpec = swaggerJSDoc(options);
 
 // APP
 app.use('/docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
+
+app.use(bodyParser.urlencoded({extended: true}));
+app.use(bodyParser.json());
 
 app.use('/users', require('./routes/users'));
 

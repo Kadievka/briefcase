@@ -5,11 +5,11 @@ export default class BaseErrorClass extends Error implements BaseError {
     message: string;
     statusCode: number;
 
-    constructor(code: number, message: string, statusCode: number){
+    constructor(baseError: BaseError){
         super();
-        this.code = code;
-        this.message = message;
-        this.statusCode = statusCode;
+        this.code = baseError.code;
+        this.message = baseError.message;
+        this.statusCode = baseError.statusCode;
     }
 
 }

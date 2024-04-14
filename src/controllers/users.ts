@@ -1,4 +1,6 @@
+import core from 'express';
 import UserService from '../services/user';
+import { UserProfile } from '../models/User';
 
 export default class UserController {
     userService: UserService = UserService.getInstance();
@@ -20,7 +22,15 @@ export default class UserController {
      * Calls get users service.
      * @returns users - Array of user's names
      */
-    getUsers(): string[] {
-        return this.userService.getUsers();
+    async getUsers(_req: any): Promise<string[]> {
+        return await this.userService.getUsers();
+    }
+
+    /**
+     * Calls create users service.
+     * @returns user
+     */
+    async createUser(req: core.Request): Promise<UserProfile>{
+        return await this.userService.createUser(req.body);
     }
 }

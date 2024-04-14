@@ -8,8 +8,12 @@ const userController = UserController.getInstance();
 
 const response = new ResponseClass(userController);
 
-router.get('/', function (_req, res) {
-    response.send(res, ResponseStatus.OK, 'getUsers');
+router.get('/', function (req, res) {
+    response.send(req, res, ResponseStatus.OK, 'getUsers');
+});
+
+router.post('/', function (req, res) {
+    response.send(req, res, ResponseStatus.OK, 'createUser');
 });
 
 module.exports = router;

@@ -12,6 +12,7 @@ export default class ResponseClass {
     }
 
     async send(
+        req: core.Request,
         res: core.Response,
         responseStatus: ResponseStatusInterface,
         method: string,
@@ -24,7 +25,7 @@ export default class ResponseClass {
         };
 
         try {
-            response.data = await this.controllerInstance[method]();
+            response.data = await this.controllerInstance[method](req);
         } catch (err) {
             const e = err as unknown as Error;
 

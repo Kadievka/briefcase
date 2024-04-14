@@ -2,6 +2,8 @@ import UserController from '../../../src/controllers/users';
 import UserService from '../../../src/services/user';
 import { usersNames } from '../mocks/users';
 
+jest.mock('mongodb');
+
 const userService = UserService.getInstance();
 
 describe('UserController Unit Tests', () => {
@@ -14,12 +16,11 @@ describe('UserController Unit Tests', () => {
 
     describe('getUsers', () => {
 
-        it('should call UserService to get users', () => {
-
-            const mockGetUsers = jest.spyOn(userService, 'getUsers').mockReturnValue(usersNames);
+        it('should call UserService to get users', async () => {
+            const mockGetUsers = jest.spyOn(userService, 'getUsers').mockImplementation(async()=>usersNames);
 
             const userController: UserController = UserController.getInstance();
-            const users = userController.getUsers();
+            const users = await userController.getUsers({});
 
             expect(mockGetUsers).toHaveBeenCalledTimes(1);
             expect(users.length).toBe(4);
