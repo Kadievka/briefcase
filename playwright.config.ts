@@ -1,6 +1,5 @@
 import { defineConfig, devices } from '@playwright/test';
 
-require('dotenv').config();
 const baseURL = process.env.PROTOCOL_URL! + process.env.BASE_URL! + process.env.PORT!;
 
 export default defineConfig({

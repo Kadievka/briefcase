@@ -5,6 +5,10 @@ export default class UserController {
 
     static instance: UserController;
 
+    /**
+     * Returns the single instance of UserController.
+     * @returns UserController - Singleton instance
+     */
     static getInstance() {
         if (!this.instance) {
             this.instance = new UserController();
@@ -12,6 +16,10 @@ export default class UserController {
         return this.instance;
     }
 
+    /**
+     * Calls get users service.
+     * @returns users - Array of user's names
+     */
     getUsers(): string[] {
         return this.userService.getUsers();
     }

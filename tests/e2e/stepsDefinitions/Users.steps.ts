@@ -2,7 +2,6 @@ import { Browser, expect } from '@playwright/test';
 import { Given, When, Then } from '@cucumber/cucumber';
 import { chromium, Page } from 'playwright';
 
-require('dotenv').config();
 const baseURL = process.env.PROTOCOL_URL! + process.env.BASE_URL! + process.env.PORT!;
 
 let page: Page;
