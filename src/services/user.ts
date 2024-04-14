@@ -1,12 +1,10 @@
 import UserInterface from '../interfaces/User';
-import usersResource from '../resources/Users';
 import DatabaseService from './database';
-import UserModel, { UserProfile } from "../models/User";
-import BaseErrorClass from "../resources/configurations/classes/BaseErrorClass";
-import INTERNAL_ERROR_CODES from "../resources/configurations/constants/InternalErrorCodes";
+import UserModel, { UserProfile } from '../models/User';
+import BaseErrorClass from '../resources/configurations/classes/BaseErrorClass';
+import INTERNAL_ERROR_CODES from '../resources/configurations/constants/InternalErrorCodes';
 
 export default class UserService {
-
     databaseService: DatabaseService;
 
     static instance: UserService;
@@ -22,7 +20,7 @@ export default class UserService {
         return this.instance;
     }
 
-    constructor(){
+    constructor() {
         this.databaseService = DatabaseService.getInstance();
     }
 
@@ -37,13 +35,18 @@ export default class UserService {
             await this.databaseService.connect('users');
             const dbCollection = this.databaseService.collections.users;
 
-            const dbUsers = await dbCollection.find().toArray() as unknown as UserModel[];
+            const dbUsers = (await dbCollection
+                .find()
+                .toArray()) as unknown as UserModel[];
 
             users = dbUsers.map((user) => user.name);
+            await this.databaseService.disconnect();
         } catch (error) {
-            throw new BaseErrorClass({...INTERNAL_ERROR_CODES.GENERAL_UNKNOWN});
+            throw new BaseErrorClass({
+                ...INTERNAL_ERROR_CODES.GENERAL_UNKNOWN,
+            });
         }
-        
+
         return users;
     }
 
@@ -52,7 +55,6 @@ export default class UserService {
      * @returns Promise<UserInterface>
      */
     async createUser(userDto: UserInterface): Promise<UserProfile> {
-
         let user: UserProfile;
 
         /* TODO:
@@ -66,21 +68,47 @@ export default class UserService {
             const dbCollection = this.databaseService.collections.users;
 
             await dbCollection.insertOne(userDto);
-            const dbUser = await dbCollection.findOne({email: userDto.email}) as unknown as UserInterface;
+            const dbUser = (await dbCollection.findOne({
+                email: userDto.email,
+            })) as unknown as UserInterface;
 
-            const userModel: UserModel = new UserModel(dbUser);
+            await this.databaseService.disconnect();
 
-            if(dbUser){
-
+            let userModel: UserModel;
+            if (dbUser) {
+                userModel = new UserModel(dbUser);
+                user = userModel.getUserProfile();
+            } else {
+                throw new BaseErrorClass({
+                    ...INTERNAL_ERROR_CODES.USER_NOT_FOUND,
+                });
             }
-
-            user = userModel.getUserProfile();
-
         } catch (error) {
-            console.log(error)
-            throw new BaseErrorClass({...INTERNAL_ERROR_CODES.GENERAL_UNKNOWN});
+            console.log(error);
+            throw new BaseErrorClass({
+                ...INTERNAL_ERROR_CODES.GENERAL_UNKNOWN,
+            });
         }
 
         return user;
+    }
+
+    /**
+     * Deletes a user by email.
+     * @returns Promise<UserInterface>
+     */
+    async deleteUserByEmail(email: string): Promise<void> {
+        try {
+            await this.databaseService.connect('users');
+            const dbCollection = this.databaseService.collections.users;
+
+            await dbCollection.deleteMany({ email });
+            await this.databaseService.disconnect();
+        } catch (error) {
+            console.log(error);
+            throw new BaseErrorClass({
+                ...INTERNAL_ERROR_CODES.GENERAL_UNKNOWN,
+            });
+        }
     }
 }

@@ -10,15 +10,15 @@ const port = process.env.PORT;
 
 // Swagger
 const swaggerDefinition = {
-    "openapi": "3.0.3",
-    "info": {
-        "version": "1.0.0",
-        "title": "Briefcase",
-        "description": "My project briefcase"
+    openapi: '3.0.3',
+    info: {
+        version: '1.0.0',
+        title: 'Briefcase',
+        description: 'My project briefcase',
     },
-    "schemes": ["http"],
-    "host": "localhost:3000",
-    "basePath": "/"
+    schemes: ['http'],
+    host: 'localhost:3000',
+    basePath: '/',
 };
 
 const options = {
@@ -31,7 +31,7 @@ const swaggerSpec = swaggerJSDoc(options);
 // APP
 app.use('/docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 
-app.use(bodyParser.urlencoded({extended: true}));
+app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 
 app.use('/users', require('./routes/users'));

@@ -30,7 +30,7 @@ export default class UserController {
      * Calls create users service.
      * @returns user
      */
-    async createUser(req: core.Request): Promise<UserProfile>{
+    async createUser(req: core.Request): Promise<UserProfile> {
         return await this.userService.createUser(req.body);
     }
 }

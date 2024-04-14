@@ -13,9 +13,8 @@
     "test:e2e:report": "playwright test show report",
     "e2e": "cucumber-js -p default",
     "e2e:report": "node --env-file=.env cucumber.report.js",
-    "format": "npm run format:prettier && npm run format:html",
-    "format:prettier": "prettier --config .prettierrc \"src/**/*.{ts,css,less,scss,js}\" --write",
-    "format:html": "js-beautify --config .jsbeautifyrc --type 'html' --file 'src/**/*.html' --replace"
+    "format": "npm run format:prettier",
+    "format:prettier": "prettier --config .prettierrc \"src/**/*.{ts,css,less,scss,js}\" --write"
   },
   "author": "Kadievka Salcedo",
   "license": "ISC",
@@ -24,6 +23,7 @@
     "@jest/globals": "^29.7.0",
     "@microsoft/tsdoc": "^0.14.2",
     "@playwright/test": "^1.43.0",
+    "@shelf/jest-mongodb": "^4.2.0",
     "@tsconfig/node20": "^20.1.4",
     "@types/express": "^4.16.1",
     "@types/jest": "^29.5.12",

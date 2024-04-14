@@ -30,5 +30,4 @@ export default class UserModel implements UserInterface {
             email: this.email,
         } as UserProfile;
     }
-
 }

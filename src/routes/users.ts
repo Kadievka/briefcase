@@ -13,7 +13,11 @@ router.get('/', function (req, res) {
 });
 
 router.post('/', function (req, res) {
-    response.send(req, res, ResponseStatus.OK, 'createUser');
+    response.send(req, res, ResponseStatus.CREATED, 'createUser');
+});
+
+router.delete('/', function (req, res) {
+    response.send(req, res, ResponseStatus.NO_CONTENT, 'createUser');
 });
 
 module.exports = router;

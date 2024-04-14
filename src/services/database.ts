@@ -1,5 +1,5 @@
 // External Dependencies
-import * as mongoDB from "mongodb";
+import * as mongoDB from 'mongodb';
 
 export default class DatabaseService {
     static instance: DatabaseService;
@@ -18,8 +18,10 @@ export default class DatabaseService {
     mongodbClient: mongoDB.MongoClient;
     db?: mongoDB.Db;
 
-    constructor(){
-        this.mongodbClient = new mongoDB.MongoClient(process.env.MONGODB_CONNECTION_STRING!);
+    constructor() {
+        this.mongodbClient = new mongoDB.MongoClient(
+            process.env.MONGODB_CONNECTION_STRING!,
+        );
     }
 
     collections: Record<string, mongoDB.Collection<mongoDB.BSON.Document>> = {};
@@ -33,18 +35,23 @@ export default class DatabaseService {
         await this.mongodbClient.connect();
         this.db = this.mongodbClient.db(process.env.MONGODB_DB_NAME!);
 
-        const dbCollection: mongoDB.Collection<mongoDB.BSON.Document> = this.db.collection(collection);
+        const dbCollection: mongoDB.Collection<mongoDB.BSON.Document> =
+            this.db.collection(collection);
         this.collections[collection] = dbCollection;
 
-        console.log(`Successfully connected to database: ${this.db.databaseName} and collection: ${this.collections[collection].collectionName}`);
+        console.log(
+            `Successfully connected to database: ${this.db.databaseName} and collection: ${this.collections[collection].collectionName}`,
+        );
     }
 
     /**
      * Closes a connection to the database
      * @returns Promise - void
      */
-    async disconnect(): Promise<void>{
+    async disconnect(): Promise<void> {
         await this.mongodbClient.close();
-        console.log(`Successfully closed database connection : ${this.db?.databaseName}`);
+        console.log(
+            `Successfully closed database connection : ${this.db?.databaseName}`,
+        );
     }
 }
