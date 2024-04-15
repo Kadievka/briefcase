@@ -1,7 +1,7 @@
 import core from 'express';
 import UserController from '../../../src/controllers/users';
 import UserService from '../../../src/services/user';
-import * as userMocks from '../mocks/Users';
+import * as userMocks from '../../../src/resources/mocks/Users';
 
 const usersNames = [
     userMocks.user1.name,

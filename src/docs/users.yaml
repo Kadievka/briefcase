@@ -51,33 +51,119 @@ paths:
                       message:
                         type: string
                         example: "General unknown error"
-
-#     post:
-#       tags:
-#         - User
-#       summary: creates a new user
-#       produces:
-#         - application/json
-#       parameters:
-#         - in: body
-#           name: sign up
-#           description: It enables a user to create an account
-#           required: false
-#           schema:
-#             $ref: "#/definitions/signUp"
-#       responses:
-#         201:
-#           description: An object with user details
-# definitions:
-#   signUp:
-#     type: object
-#     properties:
-#       user:
-#         type: object
-#         properties:
-#           username:
-#             type: string
-#           email:
-#             type: string
-#           password:
-#             type: string
+    post:
+      tags:
+        - User
+      summary: create an user
+      produces:
+        - application/json
+      parameters:
+        - in: body
+          name: Create user
+          description: Creates an user
+          required: true
+          schema:
+            type: object
+            properties:
+              name:
+                type: string
+                example: Ana
+              surname:
+                type: string
+                example: López
+              email:
+                type: string
+                example: anita@gmail.com
+              password:
+                type: string
+                example: 123456abc
+      responses:
+        201:
+          description: successful
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  statusCode:
+                    type: number
+                    example: 201
+                  message:
+                    type: string
+                    example: Created
+                  data:
+                    type: object
+                    properties:
+                      name: 
+                        type: string
+                        value: Ana
+                      surname:
+                        type: string
+                        value: López
+                      email:
+                        type: string
+                        value: anita@gmail.com
+        500:
+          description: General error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  statusCode:
+                    type: number
+                    example: 500
+                  message:
+                    type: string
+                    example: This error message should be displayed with some error message
+                  error: 
+                    type: object
+                    properties:
+                      code:
+                        type: number
+                        example: 100
+                      message:
+                        type: string
+                        example: "General unknown error"
+    delete:
+      tags:
+        - User
+      summary: gets all users
+      produces:
+        - application/json
+      responses:
+        204:
+          description: successful
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  statusCode:
+                    type: number
+                    example: 204
+                  message:
+                    type: string
+                    example: No Content
+        500:
+          description: General error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  statusCode:
+                    type: number
+                    example: 500
+                  message:
+                    type: string
+                    example: This error message should be displayed with some error message
+                  error: 
+                    type: object
+                    properties:
+                      code:
+                        type: number
+                        example: 100
+                      message:
+                        type: string
+                        example: "General unknown error"

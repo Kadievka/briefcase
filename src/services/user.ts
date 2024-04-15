@@ -84,7 +84,6 @@ export default class UserService {
                 });
             }
         } catch (error) {
-            console.log(error);
             throw new BaseErrorClass({
                 ...INTERNAL_ERROR_CODES.GENERAL_UNKNOWN,
             });
@@ -105,7 +104,6 @@ export default class UserService {
             await dbCollection.deleteMany({ email });
             await this.databaseService.disconnect();
         } catch (error) {
-            console.log(error);
             throw new BaseErrorClass({
                 ...INTERNAL_ERROR_CODES.GENERAL_UNKNOWN,
             });

@@ -38,10 +38,6 @@ export default class DatabaseService {
         const dbCollection: mongoDB.Collection<mongoDB.BSON.Document> =
             this.db.collection(collection);
         this.collections[collection] = dbCollection;
-
-        console.log(
-            `Successfully connected to database: ${this.db.databaseName} and collection: ${this.collections[collection].collectionName}`,
-        );
     }
 
     /**
@@ -50,8 +46,5 @@ export default class DatabaseService {
      */
     async disconnect(): Promise<void> {
         await this.mongodbClient.close();
-        console.log(
-            `Successfully closed database connection : ${this.db?.databaseName}`,
-        );
     }
 }

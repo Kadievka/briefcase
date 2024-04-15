@@ -26,9 +26,9 @@ export default class ResponseClass {
         try {
             response.data = await this.controllerInstance[method](req);
         } catch (err) {
-            const e = err as unknown as Error;
-
             console.error(err);
+
+            const e = err as unknown as Error;
 
             if (err instanceof BaseErrorClass) {
                 response.statusCode = err.statusCode;
