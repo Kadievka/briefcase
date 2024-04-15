@@ -24,7 +24,8 @@ export default class ResponseClass {
         };
 
         try {
-            response.data = await this.controllerInstance[method](req);
+            const data: any = await this.controllerInstance[method](req);
+            response.data = data ? data : {};
         } catch (err) {
             console.error(err);
 

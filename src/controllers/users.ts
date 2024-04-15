@@ -30,7 +30,7 @@ export default class UserController {
      * Calls create users service.
      * @returns user
      */
-    async createUser(req: core.Request): Promise<UserProfile> {
+    async createUser(req: core.Request): Promise<void> {
         return await this.userService.createUser(req.body);
     }
 
@@ -40,5 +40,13 @@ export default class UserController {
      */
     async deleteUser(req: core.Request): Promise<void> {
         return await this.userService.deleteUserByEmail(req.body.email);
+    }
+
+    /**
+     * Calls get user by email service.
+     * @returns Promise<UserProfile | undefined> - user profile or undefined
+     */
+    async getUserByEmail(req: core.Request): Promise<UserProfile | undefined> {
+        return await this.userService.getUserByEmail(req.params.email);
     }
 }

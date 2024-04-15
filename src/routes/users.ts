@@ -20,4 +20,8 @@ router.delete('/', function (req, res) {
     response.send(req, res, ResponseStatus.NO_CONTENT, 'deleteUser');
 });
 
+router.get('/:email', function (req, res) {
+    response.send(req, res, ResponseStatus.OK, 'getUserByEmail');
+});
+
 module.exports = router;

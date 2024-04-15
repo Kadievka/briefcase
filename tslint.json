@@ -1,9 +1,23 @@
 {
     "defaultSeverity": "error",
-    "extends": ["tslint:recommended"],
+    "extends": [
+        "tslint:recommended"
+    ],
     "jsRules": {},
     "rules": {
         "no-console": false
     },
-    "rulesDirectory": []
+    "rulesDirectory": [],
+    "trailing-comma": [
+        true,
+        {
+            "singleline": "never",
+            "multiline": {
+                "objects": "always",
+                "arrays": "always",
+                "functions": "never",
+                "typeLiterals": "ignore"
+            }
+        }
+    ]
 }

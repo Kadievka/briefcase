@@ -13,7 +13,7 @@
     "e2e": "cucumber-js -p default",
     "e2e:report": "node --env-file=.env cucumber.report.js",
     "format": "npm run format:prettier",
-    "format:prettier": "prettier --config .prettierrc \"src/**/*.{ts,css,less,scss,js}\" --write"
+    "format:prettier": "prettier --config .prettierrc \"src/**/*.{ts,css,less,scss,js}\" \"tests/**/*.{ts,css,less,scss,js}\" --write"
   },
   "author": "Kadievka Salcedo",
   "license": "ISC",

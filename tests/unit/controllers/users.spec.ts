@@ -8,7 +8,7 @@ const usersNames = [
     userMocks.user2.name,
     userMocks.user3.name,
     userMocks.user4.name,
-]
+];
 
 jest.mock('mongodb');
 
@@ -24,7 +24,9 @@ describe('UserController Unit Tests', () => {
 
     describe('getUsers', () => {
         it('should call UserService to get users', async () => {
-            const mockGetUsers = jest.spyOn(userService, 'getUsers').mockImplementation(async () => usersNames);
+            const mockGetUsers = jest
+                .spyOn(userService, 'getUsers')
+                .mockImplementation(async () => usersNames);
 
             const userController: UserController = UserController.getInstance();
             const users = await userController.getUsers({});
@@ -37,19 +39,19 @@ describe('UserController Unit Tests', () => {
 
     describe('createUser', () => {
         it('should call UserService to create an user', async () => {
-            const mockCreateUser = jest.spyOn(userService, 'createUser').mockImplementation(async () => userMocks.user1);
+            const mockCreateUser = jest
+                .spyOn(userService, 'createUser')
+                .mockImplementation(async () => {});
 
             const userController: UserController = UserController.getInstance();
             const user = await userController.createUser({
                 body: {
-                    ...userMocks.user1
-                }
+                    ...userMocks.user1,
+                },
             } as core.Request);
 
             expect(mockCreateUser).toHaveBeenCalledTimes(1);
-            expect(user).toHaveProperty("name", userMocks.user1.name);
-            expect(user).toHaveProperty("surname", userMocks.user1.surname);
-            expect(user).toHaveProperty("email", userMocks.user1.email);
+            expect(user).toBeUndefined();
         });
     });
 });

@@ -1,8 +1,8 @@
 // cucumber.js
 let common = [
-    'tests/e2e/features/**/*.feature',                 // Specify our feature files
-    '--require-module ts-node/register',               // Load TypeScript module
-    '--require tests/e2e/stepsDefinitions/**/*.ts',    // Load step definitions
+    'tests/e2e/features/**/*.feature', // Specify our feature files
+    '--require-module ts-node/register', // Load TypeScript module
+    '--require tests/e2e/stepsDefinitions/**/*.ts', // Load step definitions
     // Next steps are for generate the e2e report
     '--require cucumber.node.js',
     '--format json:playwright/reports/cucumber-html-reporter.json',
@@ -13,5 +13,5 @@ let common = [
 ].join(' ');
 
 module.exports = {
-    default: common
+    default: common,
 };

@@ -7,5 +7,17 @@
     "bracketSpacing": true,
     "arrowParens": "always",
     "jsxBracketSameLine": false,
-    "semi": true
+    "semi": true,
+    "htmlWhitespaceSensitivity": "css",
+    "insertPragma": false,
+    "jsxSingleQuote": true,
+    "proseWrap": "always",
+    "quoteProps": "as-needed",
+    "requirePragma": false,
+    "overrides": [{
+        "files": ["*.spec.ts", "*.steps.ts"],
+        "options": {
+        "semi": true
+        }
+    }]
 }

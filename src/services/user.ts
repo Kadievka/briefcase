@@ -54,7 +54,7 @@ export default class UserService {
      * Creates a new user.
      * @returns Promise<UserInterface>
      */
-    async createUser(userDto: UserInterface): Promise<UserProfile> {
+    async createUser(userDto: UserInterface): Promise<void> {
         let user: UserProfile;
 
         /* TODO:
@@ -74,9 +74,8 @@ export default class UserService {
 
             await this.databaseService.disconnect();
 
-            let userModel: UserModel;
             if (dbUser) {
-                userModel = new UserModel(dbUser);
+                const userModel: UserModel = new UserModel(dbUser);
                 user = userModel.getUserProfile();
             } else {
                 throw new BaseErrorClass({
@@ -88,8 +87,6 @@ export default class UserService {
                 ...INTERNAL_ERROR_CODES.GENERAL_UNKNOWN,
             });
         }
-
-        return user;
     }
 
     /**
@@ -108,5 +105,34 @@ export default class UserService {
                 ...INTERNAL_ERROR_CODES.GENERAL_UNKNOWN,
             });
         }
+    }
+
+    /**
+     * Gets an user by email.
+     * @returns Promise<UserProfile>
+     */
+    async getUserByEmail(email: string): Promise<UserProfile | undefined> {
+        let user: UserProfile | undefined;
+
+        let dbUser: any;
+        try {
+            await this.databaseService.connect('users');
+            const dbCollection = this.databaseService.collections.users;
+
+            dbUser = await dbCollection.findOne({ email });
+            await this.databaseService.disconnect();
+        } catch (error) {
+            throw new BaseErrorClass({
+                ...INTERNAL_ERROR_CODES.GENERAL_UNKNOWN,
+            });
+        }
+        if (dbUser) {
+            const userModel: UserModel = new UserModel(dbUser);
+            user = userModel.getUserProfile();
+        }
+
+        console.log('AQUI ESTOY', { user });
+
+        return user;
     }
 }

@@ -30,9 +30,4 @@ const user4: User = {
     password: testPass,
 };
 
-export {
-    user1,
-    user2,
-    user3,
-    user4,
-};
+export { user1, user2, user3, user4 };
