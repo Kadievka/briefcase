@@ -131,8 +131,6 @@ export default class UserService {
             user = userModel.getUserProfile();
         }
 
-        console.log('AQUI ESTOY', { user });
-
         return user;
     }
 }

@@ -1,6 +1,5 @@
 import UserService from '../../../src/services/user';
 import * as userMocks from '../../../src/resources/mocks/Users';
-import { UserProfile } from '../../../src/models/User';
 
 const userService: UserService = UserService.getInstance();
 
