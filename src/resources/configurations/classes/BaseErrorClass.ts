@@ -1,9 +1,9 @@
-import BaseError from '../../../interfaces/configurations/BaseError';
+import BaseError from '../../../interfaces/configurations/IBaseError';
 
 export default class BaseErrorClass extends Error implements BaseError {
-    code: number;
-    message: string;
-    statusCode: number;
+    public code: number;
+    public message: string;
+    public statusCode: number;
 
     constructor(baseError: BaseError) {
         super();

@@ -2,14 +2,15 @@ import 'dotenv/config';
 import {
     APIRequestContext,
     Browser,
-    Response,
     expect,
     request,
+    Response,
 } from '@playwright/test';
 import { Given, When, Then } from '@cucumber/cucumber';
 import { chromium, Page } from 'playwright';
-import UserService from '../../../src/services/user';
-import * as userMocks from '../../../src/resources/mocks/Users';
+import * as userMocks from '../../../src/resources/mocks/UsersMock';
+import IUser from '../../../src/interfaces/IUser';
+import { deleteUser, createUser } from '../functions/user.functions';
 
 const baseURL =
     process.env.PROTOCOL_URL! + process.env.BASE_URL! + process.env.PORT!;
@@ -19,7 +20,12 @@ let browser: Browser;
 let response: any;
 let req: Promise<APIRequestContext> = request.newContext();
 
-const userService: UserService = UserService.getInstance();
+const usersMockArray: IUser[] = [
+    userMocks.user1,
+    userMocks.user2,
+    userMocks.user3,
+    userMocks.user4,
+];
 
 Given('I am on the home page', async () => {
     browser = await chromium.launch();
@@ -27,26 +33,22 @@ Given('I am on the home page', async () => {
     await page.goto(`${baseURL}/`);
 });
 
-Given('I delete 4 users with the service', async () => {
-    await userService.deleteUserByEmail(userMocks.user1.email);
-    await userService.deleteUserByEmail(userMocks.user2.email);
-    await userService.deleteUserByEmail(userMocks.user3.email);
-    await userService.deleteUserByEmail(userMocks.user4.email);
+Given('I delete {int} users', async (numberOfUsers: number) => {
+    const users: IUser[] = usersMockArray.slice(0, numberOfUsers - 1);
+    users.forEach(async (user) => {
+        await deleteUser(req, baseURL, user.email);
+    });
 });
 
-Given('I delete user1 with the service', async () => {
-    await userService.deleteUserByEmail(userMocks.user1.email);
+Given('I create {int} users', async (numberOfUsers: number) => {
+    const users: IUser[] = usersMockArray.slice(0, numberOfUsers - 1);
+    users.forEach(async (user) => {
+        await createUser(req, baseURL, user);
+    });
 });
 
-Given('I create 4 users with the service', async () => {
-    await userService.createUser(userMocks.user1);
-    await userService.createUser(userMocks.user2);
-    await userService.createUser(userMocks.user3);
-    await userService.createUser(userMocks.user4);
-});
-
-Given('I create user1 with the service', async () => {
-    await userService.createUser(userMocks.user1);
+Given('I delete user1', async () => {
+    await deleteUser(req, baseURL, userMocks.user1.email);
 });
 
 When('I use the route get users', async () => {
@@ -55,27 +57,11 @@ When('I use the route get users', async () => {
 });
 
 When('I use the route post users', async () => {
-    response = await (
-        await req
-    ).post(`${baseURL}/users`, {
-        data: {
-            body: {
-                ...userMocks.user1,
-            },
-        },
-    });
+    response = await createUser(req, baseURL, userMocks.user1);
 });
 
 When('I use the route delete users', async () => {
-    response = await (
-        await req
-    ).delete(`${baseURL}/users`, {
-        data: {
-            body: {
-                email: userMocks.user1.email,
-            },
-        },
-    });
+    response = await deleteUser(req, baseURL, userMocks.user1.email);
 });
 
 When('I use the route get user by email', async () => {
@@ -91,24 +77,6 @@ Then('I should see 4 users', async () => {
     await browser.close();
 });
 
-Then('I should receive 200 statusCode response', async () => {
-    const bodyJson = await response?.json();
-    expect(bodyJson).toHaveProperty('statusCode', 200);
-    expect(bodyJson).toHaveProperty('message', 'Ok');
-});
-
-Then('I should receive 201 statusCode response', async () => {
-    const bodyJson = await response?.json();
-    expect(bodyJson).toHaveProperty('statusCode', 201);
-    expect(bodyJson).toHaveProperty('message', 'Created successfully');
-});
-
-Then('I should receive 204 statusCode response', async () => {
-    const castedResponse = response as Response;
-    expect(castedResponse.status()).toBe(204);
-    expect(castedResponse.statusText()).toBe('No Content');
-});
-
 Then('I should see the user1 profile', async () => {
     const bodyJson = await response?.json();
     expect(bodyJson).toHaveProperty('data');
@@ -120,11 +88,22 @@ Then('I should see the user1 profile', async () => {
     await browser.close();
 });
 
-Then('I should not see the user1 profile', async () => {
-    const bodyJson = await response?.json();
-    expect(bodyJson).toHaveProperty('statusCode', 200);
-    expect(bodyJson).toHaveProperty('message', 'Ok');
-    expect(bodyJson).toHaveProperty('data');
-    expect(bodyJson.data).toStrictEqual({});
-    await browser.close();
+Then('I should receive {int} statusCode', async (statusCode: number) => {
+    if (statusCode === 204) {
+        const castedResponse = response as Response;
+        expect(castedResponse.status()).toBe(statusCode);
+    } else {
+        const bodyJson = await response?.json();
+        expect(bodyJson).toHaveProperty('statusCode', statusCode);
+    }
+});
+
+Then('I should receive {string} message', async (message: string) => {
+    if (message === 'No Content') {
+        const castedResponse = response as Response;
+        expect(castedResponse.statusText()).toBe(message);
+    } else {
+        const bodyJson = await response?.json();
+        expect(bodyJson).toHaveProperty('message', message);
+    }
 });

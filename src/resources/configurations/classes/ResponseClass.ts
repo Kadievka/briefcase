@@ -1,33 +1,45 @@
-import core from 'express';
-import Response from '../../../interfaces/configurations/Response';
-import ResponseStatusInterface from '../../../interfaces/configurations/ResponseStatus';
 import BaseErrorClass from './BaseErrorClass';
+import core from 'express';
+import getLogger from '../../../utils/logger';
 import INTERNAL_ERROR_CODES from '../constants/InternalErrorCodes';
+import IResponseStatus from '../../../interfaces/configurations/IResponseStatus';
+import Response from '../../../interfaces/configurations/IResponse';
+
+const log = getLogger('ResponseClass');
 
 export default class ResponseClass {
-    controllerInstance: any;
+    public controllerInstance: any;
 
     constructor(controllerInstance: any) {
         this.controllerInstance = controllerInstance;
     }
 
-    async send(
+    /**
+     * Make the request to the app or handles errors.
+     * @param {core.Request} req http request object
+     * @param {core.Request} res http response object
+     * @param {IResponseStatus} responseStatus message and statusCode
+     * @param {string} method The name of the controller's function to be called
+     * @param {string | undefined} message The message to must be displayed
+     * @returns {Promise<void>} void
+     */
+    public async send(
         req: core.Request,
         res: core.Response,
-        responseStatus: ResponseStatusInterface,
+        responseStatus: IResponseStatus,
         method: string,
         message?: string,
     ): Promise<void> {
-        let response: Response = {
+        const response: Response = {
+            message: message || responseStatus?.message,
             statusCode: responseStatus.statusCode,
-            message: message || responseStatus.message,
         };
 
         try {
             const data: any = await this.controllerInstance[method](req);
             response.data = data ? data : {};
         } catch (err) {
-            console.error(err);
+            log.error('send method failed with error: ', err);
 
             const e = err as unknown as Error;
 

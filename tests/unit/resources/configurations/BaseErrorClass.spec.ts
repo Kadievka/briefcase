@@ -1,11 +1,11 @@
 import INTERNAL_ERROR_CODES from '../../../../src/resources/configurations/constants/InternalErrorCodes';
-import BaseError from '../../../../src/interfaces/configurations/BaseError';
+import IBaseError from '../../../../src/interfaces/configurations/IBaseError';
 import BaseErrorClass from '../../../../src/resources/configurations/classes/BaseErrorClass';
 
 describe('BaseErrorClass Unit Tests', () => {
     describe('constructor', () => {
         it('should create a new ResponseClass', () => {
-            const baseErrorInterface: BaseError = {
+            const baseErrorInterface: IBaseError = {
                 ...INTERNAL_ERROR_CODES.GENERAL_UNKNOWN,
             };
             const baseErrorClass: BaseErrorClass = new BaseErrorClass(
@@ -13,7 +13,7 @@ describe('BaseErrorClass Unit Tests', () => {
             );
 
             expect(baseErrorClass).toBeInstanceOf(BaseErrorClass);
-            expect(baseErrorClass).toHaveProperty('code', 100);
+            expect(baseErrorClass).toHaveProperty('code', 1000);
             expect(baseErrorClass).toHaveProperty(
                 'message',
                 'General unknown error',

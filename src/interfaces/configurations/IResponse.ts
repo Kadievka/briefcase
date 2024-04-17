@@ -1,6 +1,6 @@
-import ResponseError from './ResponseError';
+import ResponseError from './IResponseError';
 
-export default interface Response {
+export default interface IResponse {
     statusCode: number;
     message?: string;
     data?: Record<string, any>;

@@ -2,36 +2,39 @@
 import * as mongoDB from 'mongodb';
 
 export default class DatabaseService {
-    static instance: DatabaseService;
+    public static instance: DatabaseService;
 
     /**
      * Returns the single instance of DatabaseService.
      * @returns DatabaseService - Singleton instance
      */
-    static getInstance() {
+    public static getInstance() {
         if (!this.instance) {
             this.instance = new DatabaseService();
         }
         return this.instance;
     }
 
-    mongodbClient: mongoDB.MongoClient;
-    db?: mongoDB.Db;
+    public collections: Record<
+        string,
+        mongoDB.Collection<mongoDB.BSON.Document>
+    > = {};
 
-    constructor() {
+    private mongodbClient: mongoDB.MongoClient;
+    private db?: mongoDB.Db;
+
+    public constructor() {
         this.mongodbClient = new mongoDB.MongoClient(
             process.env.MONGODB_CONNECTION_STRING!,
         );
     }
 
-    collections: Record<string, mongoDB.Collection<mongoDB.BSON.Document>> = {};
-
     /**
      * Opens a connection to the database and collection
-     * @param collection: string - Needs a collection name to connect to de database
-     * @returns Promise - void
+     * @param {string} collection name to connect to de database
+     * @returns {Promise<void>} void
      */
-    async connect(collection: string): Promise<void> {
+    public async connect(collection: string): Promise<void> {
         await this.mongodbClient.connect();
         this.db = this.mongodbClient.db(process.env.MONGODB_DB_NAME!);
 
@@ -42,9 +45,9 @@ export default class DatabaseService {
 
     /**
      * Closes a connection to the database
-     * @returns Promise - void
+     * @returns {Promise<void>} void
      */
-    async disconnect(): Promise<void> {
+    public async disconnect(): Promise<void> {
         await this.mongodbClient.close();
     }
 }

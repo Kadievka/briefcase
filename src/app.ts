@@ -1,31 +1,32 @@
-// Swagger imports
-import swaggerUi from 'swagger-ui-express';
-import swaggerJSDoc from 'swagger-jsdoc';
 import bodyParser from 'body-parser';
-
-// APP imports
 import express from 'express';
+import getLogger from './utils/logger';
+import swaggerJSDoc from 'swagger-jsdoc';
+import swaggerUi from 'swagger-ui-express';
+import userRoutes from './routes/users.route';
+
+const log = getLogger('app.js');
+
+/*--- App ---*/
 const app = express();
 const port = process.env.PORT;
 
-// Swagger
+/*--- Swagger ---*/
 const swaggerDefinition = {
-    openapi: '3.0.3',
-    info: {
-        version: '1.0.0',
-        title: 'Briefcase',
-        description: 'My project briefcase',
-    },
-    schemes: ['http'],
-    host: 'localhost:3000',
     basePath: '/',
+    host: 'localhost:3000',
+    info: {
+        description: 'My project briefcase',
+        title: 'Briefcase',
+        version: '1.0.0',
+    },
+    openapi: '3.0.3',
+    schemes: ['http'],
 };
-
 const options = {
+    apis: ['./src/docs/**/*.yaml'],
     swaggerDefinition,
-    apis: ['./src/docs/**/*.yaml'], // path to the API docs
 };
-
 const swaggerSpec = swaggerJSDoc(options);
 
 // APP
@@ -34,12 +35,12 @@ app.use('/docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 
-app.use('/users', require('./routes/users'));
+app.use('/users', userRoutes);
 
-app.get('/', function (req, res) {
+app.get('/', (req, res) => {
     res.send('Welcome');
 });
 
-app.listen(port, function () {
-    console.log(`Briefcase app listening on port ${port}!`);
+app.listen(port, () => {
+    log.info(() => `Briefcase app listen on port ${port}!`);
 });

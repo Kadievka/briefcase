@@ -1,13 +1,14 @@
 import core from 'express';
-import UserController from '../../../src/controllers/users';
-import UserService from '../../../src/services/user';
-import * as userMocks from '../../../src/resources/mocks/Users';
+import UserController from '../../../src/controllers/users.controller';
+import UserService from '../../../src/services/user.service';
+import * as userMocks from '../../../src/resources/mocks/UsersMock';
+import IUser from '../../../src/interfaces/IUser';
 
-const usersNames = [
-    userMocks.user1.name,
-    userMocks.user2.name,
-    userMocks.user3.name,
-    userMocks.user4.name,
+const users: IUser[] = [
+    userMocks.user1,
+    userMocks.user2,
+    userMocks.user3,
+    userMocks.user4,
 ];
 
 jest.mock('mongodb');
@@ -26,14 +27,19 @@ describe('UserController Unit Tests', () => {
         it('should call UserService to get users', async () => {
             const mockGetUsers = jest
                 .spyOn(userService, 'getUsers')
-                .mockImplementation(async () => usersNames);
+                .mockImplementation(async () => [
+                    userMocks.user1,
+                    userMocks.user2,
+                    userMocks.user3,
+                    userMocks.user4,
+                ]);
 
             const userController: UserController = UserController.getInstance();
             const users = await userController.getUsers({});
 
             expect(mockGetUsers).toHaveBeenCalledTimes(1);
             expect(users.length).toBe(4);
-            expect(users).toStrictEqual(usersNames);
+            expect(users).toStrictEqual(users);
         });
     });
 

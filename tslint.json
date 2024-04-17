@@ -5,7 +5,13 @@
     ],
     "jsRules": {},
     "rules": {
-        "no-console": false
+        "no-console": true,
+        "quotemark": [true, "single"],
+        "ordered-imports": false,
+        "variable-name": [
+            true,
+            "allow-leading-underscore"
+        ]
     },
     "rulesDirectory": [],
     "trailing-comma": [

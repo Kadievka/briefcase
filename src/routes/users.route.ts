@@ -1,27 +1,28 @@
 import express from 'express';
-import UserController from '../controllers/users';
+import UserController from '../controllers/users.controller';
 import ResponseStatus from '../resources/configurations/constants/ResponseStatusCodes';
 import ResponseClass from '../resources/configurations/classes/ResponseClass';
+
 const router = express.Router();
 
 const userController = UserController.getInstance();
 
 const response = new ResponseClass(userController);
 
-router.get('/', function (req, res) {
+router.get('/', (req, res) => {
     response.send(req, res, ResponseStatus.OK, 'getUsers');
 });
 
-router.post('/', function (req, res) {
+router.post('/', (req, res) => {
     response.send(req, res, ResponseStatus.CREATED, 'createUser');
 });
 
-router.delete('/', function (req, res) {
-    response.send(req, res, ResponseStatus.NO_CONTENT, 'deleteUser');
+router.delete('/', (req, res) => {
+    response.send(req, res, ResponseStatus.NOT_CONTENT, 'deleteUser');
 });
 
-router.get('/:email', function (req, res) {
+router.get('/:email', (req, res) => {
     response.send(req, res, ResponseStatus.OK, 'getUserByEmail');
 });
 
-module.exports = router;
+export default router;
