@@ -15,7 +15,7 @@ export const authMiddleware = async (
         authService.auth(req, token);
         next();
     } catch (err) {
-        let response: IResponse = {
+        const response: IResponse = {
             statusCode: 500,
         };
         handleErrorResponse(err, response);

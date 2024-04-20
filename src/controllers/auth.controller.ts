@@ -4,8 +4,6 @@ import AuthService from '../services/auth.service';
 export default class AuthController {
     public static instance: AuthController;
 
-    authService: AuthService = AuthService.getInstance();
-
     /**
      * Returns the single instance of AuthController.
      * @returns AuthController - Singleton instance
@@ -16,6 +14,8 @@ export default class AuthController {
         }
         return this.instance;
     }
+
+    private authService: AuthService = AuthService.getInstance();
 
     /**
      * Calls get users service.

@@ -160,25 +160,6 @@ export default class UserService {
     }
 
     /**
-     * Casts a dbUser to a user profile
-     * @param {any} dbUser The user object to update
-     * @returns {Promise<IUserProfile>} user profile
-     */
-    private getUserProfile(dbUser: any): IUserProfile {
-        log.info('Start UserService@getUserProfile method');
-        if (!dbUser) {
-            throw new BaseErrorClass({
-                ...INTERNAL_ERROR_CODES.USER_NOT_FOUND,
-            });
-        }
-        const userModel: UserModel = new UserModel({
-            ...dbUser,
-        } as IUser);
-        log.info('Finish UserService@getUserProfile method');
-        return userModel.getUserProfile();
-    }
-
-    /**
      * Updates an user by email.
      * @param {IUser} userDto The user object to update
      * @returns {Promise<IUserProfile>} userProfile The updated user profile
@@ -216,4 +197,24 @@ export default class UserService {
         log.info('Finish UserService@updateUserByEmail method');
         return this.getUserProfile(dbUser);
     }
+
+    /**
+     * Casts a dbUser to a user profile
+     * @param {any} dbUser The user object to update
+     * @returns {Promise<IUserProfile>} user profile
+     */
+    private getUserProfile(dbUser: any): IUserProfile {
+        log.info('Start UserService@getUserProfile method');
+        if (!dbUser) {
+            throw new BaseErrorClass({
+                ...INTERNAL_ERROR_CODES.USER_NOT_FOUND,
+            });
+        }
+        const userModel: UserModel = new UserModel({
+            ...dbUser,
+        } as IUser);
+        log.info('Finish UserService@getUserProfile method');
+        return userModel.getUserProfile();
+    }
+
 }

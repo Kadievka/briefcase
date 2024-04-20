@@ -40,19 +40,10 @@ export default class UserModel implements IUser {
     public mapUserForDB(): IUser {
         return {
             email: this.email,
-            password: this.password,
             name: this.name,
+            password: this.password,
             surname: this.surname,
         };
-    }
-
-    /**
-     * Encrypts user's password
-     * @param {string} pass
-     * @returns {string} encrypted password
-     */
-    private encryptedPassword(pass: string): string {
-        return encrypt(this.SALT_ROUNDS, pass);
     }
 
     /**
@@ -77,4 +68,14 @@ export default class UserModel implements IUser {
             name: this.name,
         } as IUserSignature;
     }
+
+    /**
+     * Encrypts user's password
+     * @param {string} pass
+     * @returns {string} encrypted password
+     */
+    private encryptedPassword(pass: string): string {
+        return encrypt(this.SALT_ROUNDS, pass);
+    }
+
 }

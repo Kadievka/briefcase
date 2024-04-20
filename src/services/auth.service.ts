@@ -14,9 +14,6 @@ const log = getLogger('auth.service');
 export default class AuthService {
     public static instance: AuthService;
 
-    private JWT_SECRET_KEY = process.env.JWT_SECRET_KEY!;
-    private JWT_USER_EXPIRE_TIME = process.env.JWT_USER_EXPIRE_TIME!;
-
     /**
      * Returns the single instance of AuthService.
      * @returns {AuthService} Singleton instance
@@ -27,6 +24,9 @@ export default class AuthService {
         }
         return this.instance;
     }
+
+    private JWT_SECRET_KEY = process.env.JWT_SECRET_KEY!;
+    private JWT_USER_EXPIRE_TIME = process.env.JWT_USER_EXPIRE_TIME!;
 
     private userService: UserService = UserService.getInstance();
 
@@ -49,7 +49,7 @@ export default class AuthService {
         });
 
         log.info('Finish AuthService@login method');
-        return { user: userSignature, token: token } as ILoginOutput;
+        return { user: userSignature, token } as ILoginOutput;
     }
 
     /**
@@ -69,7 +69,6 @@ export default class AuthService {
                 this.JWT_SECRET_KEY,
             );
             (req as IAuthRequest).userSignature = decoded;
-            console.log('AQUI ESTOYYYYYYYYYYYYY', req);
         } catch (error) {
             log.error('Error AuthService@auth error: ', error);
             throw new BaseErrorClass(INTERNAL_ERROR_CODES.UNAUTHORIZED);
