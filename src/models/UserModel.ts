@@ -77,5 +77,4 @@ export default class UserModel implements IUser {
     private encryptedPassword(pass: string): string {
         return encrypt(this.SALT_ROUNDS, pass);
     }
-
 }

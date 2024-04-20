@@ -59,9 +59,7 @@ export default class UserService {
             });
         } catch (error) {
             log.error('Error getUsers method', error);
-            throw new BaseErrorClass({
-                ...INTERNAL_ERROR_CODES.GENERAL_UNKNOWN,
-            });
+            throw new BaseErrorClass(INTERNAL_ERROR_CODES.GENERAL_UNKNOWN);
         }
 
         log.info('Finish UserService@getUsers method');
@@ -77,9 +75,8 @@ export default class UserService {
         log.info('Start UserService@createUser method');
 
         /* TODO:
-            - add validation for required fields
+            - add validation for required fields and types
             - add validation for unique email
-            - encrypt password
         */
         const userModel: UserModel = new UserModel(userDto);
 
@@ -90,9 +87,7 @@ export default class UserService {
             await dbCollection.insertOne(userModel.mapUserForDB());
         } catch (error) {
             log.error('Error createUser method', error);
-            throw new BaseErrorClass({
-                ...INTERNAL_ERROR_CODES.GENERAL_UNKNOWN,
-            });
+            throw new BaseErrorClass(INTERNAL_ERROR_CODES.GENERAL_UNKNOWN);
         }
         log.info('Finish UserService@createUser method');
     }
@@ -111,9 +106,7 @@ export default class UserService {
             await dbCollection.deleteMany({ email });
         } catch (error) {
             log.error('Error deleteUserByEmail method', error);
-            throw new BaseErrorClass({
-                ...INTERNAL_ERROR_CODES.GENERAL_UNKNOWN,
-            });
+            throw new BaseErrorClass(INTERNAL_ERROR_CODES.GENERAL_UNKNOWN);
         }
         log.info('Finish UserService@deleteUserByEmail method');
     }
@@ -135,9 +128,7 @@ export default class UserService {
             dbUser = await dbCollection.findOne({ email });
         } catch (error) {
             log.error('Error getDbUserByEmail method', error);
-            throw new BaseErrorClass({
-                ...INTERNAL_ERROR_CODES.GENERAL_UNKNOWN,
-            });
+            throw new BaseErrorClass(INTERNAL_ERROR_CODES.GENERAL_UNKNOWN);
         }
         log.info('Finish UserService@getDbUserByEmail method');
         return dbUser;
@@ -189,9 +180,7 @@ export default class UserService {
             );
         } catch (error) {
             log.error('Error updateUserByEmail method', error);
-            throw new BaseErrorClass({
-                ...INTERNAL_ERROR_CODES.GENERAL_UNKNOWN,
-            });
+            throw new BaseErrorClass(INTERNAL_ERROR_CODES.GENERAL_UNKNOWN);
         }
 
         log.info('Finish UserService@updateUserByEmail method');
@@ -206,9 +195,7 @@ export default class UserService {
     private getUserProfile(dbUser: any): IUserProfile {
         log.info('Start UserService@getUserProfile method');
         if (!dbUser) {
-            throw new BaseErrorClass({
-                ...INTERNAL_ERROR_CODES.USER_NOT_FOUND,
-            });
+            throw new BaseErrorClass(INTERNAL_ERROR_CODES.USER_NOT_FOUND);
         }
         const userModel: UserModel = new UserModel({
             ...dbUser,
@@ -216,5 +203,4 @@ export default class UserService {
         log.info('Finish UserService@getUserProfile method');
         return userModel.getUserProfile();
     }
-
 }
