@@ -57,8 +57,6 @@ export default class UserService {
                 const userProfile: IUserProfile = userModel.getUserProfile();
                 users.push(userProfile);
             });
-
-            
         } catch (error) {
             log.error('Error getUsers method', error);
             throw new BaseErrorClass({
@@ -90,8 +88,6 @@ export default class UserService {
             const dbCollection = this.databaseService.collections.users;
 
             await dbCollection.insertOne(userModel.mapUserForDB());
-
-            
         } catch (error) {
             log.error('Error createUser method', error);
             throw new BaseErrorClass({
@@ -113,7 +109,6 @@ export default class UserService {
             const dbCollection = this.databaseService.collections.users;
 
             await dbCollection.deleteMany({ email });
-            
         } catch (error) {
             log.error('Error deleteUserByEmail method', error);
             throw new BaseErrorClass({
@@ -128,8 +123,11 @@ export default class UserService {
      * @param {string} email The user email
      * @returns {Promise<any>} user information comes from the database
      */
-    public async getDbUserByEmail(email: string): Promise<any>{
-        log.info('Start UserService@getDbUserByEmail method with email: ', email);
+    public async getDbUserByEmail(email: string): Promise<any> {
+        log.info(
+            'Start UserService@getDbUserByEmail method with email: ',
+            email,
+        );
         let dbUser: any;
         try {
             await this.databaseService.connect('users');
@@ -156,7 +154,7 @@ export default class UserService {
         const dbUser = await this.getDbUserByEmail(email);
 
         const user: IUserProfile = this.getUserProfile(dbUser);
-    
+
         log.info('Finish UserService@getUserByEmail method');
         return user;
     }
@@ -185,8 +183,13 @@ export default class UserService {
      * @param {IUser} userDto The user object to update
      * @returns {Promise<IUserProfile>} userProfile The updated user profile
      */
-    public async updateUserByEmail(userDto: IUserProfile): Promise<IUserProfile> {
-        log.info('Start UserService@updateUserByEmail method with email: ', userDto.email);
+    public async updateUserByEmail(
+        userDto: IUserProfile,
+    ): Promise<IUserProfile> {
+        log.info(
+            'Start UserService@updateUserByEmail method with email: ',
+            userDto.email,
+        );
         await this.getUserByEmail(userDto.email);
 
         // TODO add logic to update the email or the password
@@ -196,12 +199,13 @@ export default class UserService {
             await this.databaseService.connect('users');
             const dbCollection = this.databaseService.collections.users;
 
-            dbUser = await dbCollection.updateOne({ email: userDto.email }, {
-                name: userDto.name,
-                surname: userDto.surname
-            });
-
-            
+            dbUser = await dbCollection.updateOne(
+                { email: userDto.email },
+                {
+                    name: userDto.name,
+                    surname: userDto.surname,
+                },
+            );
         } catch (error) {
             log.error('Error updateUserByEmail method', error);
             throw new BaseErrorClass({
@@ -212,5 +216,4 @@ export default class UserService {
         log.info('Finish UserService@updateUserByEmail method');
         return this.getUserProfile(dbUser);
     }
-
 }

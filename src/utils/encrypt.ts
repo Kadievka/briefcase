@@ -1,8 +1,7 @@
-
-import bcrypt from "bcryptjs";
+import bcrypt from 'bcryptjs';
 
 export function encrypt(saltRounds: number, stringToEncrypt: string): string {
-    let hash: string = "";
+    let hash: string = '';
     const salt: string = bcrypt.genSaltSync(saltRounds);
     hash = bcrypt.hashSync(stringToEncrypt.toString(), salt);
     return hash;

@@ -13,15 +13,15 @@ const INTERNAL_ERROR_CODES: Record<string, BaseError> = {
         statusCode: RESPONSE_STATUS_CODES.NOT_FOUND.statusCode,
     },
     PASSWORD_INVALID: {
-            code: 4001,
-            message: 'Invalid password',
-            statusCode: RESPONSE_STATUS_CODES.BAD_REQUEST.statusCode
+        code: 4001,
+        message: 'Invalid password',
+        statusCode: RESPONSE_STATUS_CODES.BAD_REQUEST.statusCode,
     },
     UNAUTHORIZED: {
         code: 4002,
         message: 'Please authenticate',
-        statusCode: RESPONSE_STATUS_CODES.UNAUTHORIZED.statusCode
-    }
+        statusCode: RESPONSE_STATUS_CODES.UNAUTHORIZED.statusCode,
+    },
 };
 
 export default INTERNAL_ERROR_CODES;

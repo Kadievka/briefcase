@@ -1,7 +1,7 @@
 import jwt from 'jsonwebtoken';
-import { ILoginInput, ILoginOutput } from "../interfaces/ILogin";
-import UserModel from "../models/UserModel";
-import getLogger from "../utils/logger";
+import { ILoginInput, ILoginOutput } from '../interfaces/ILogin';
+import UserModel from '../models/UserModel';
+import getLogger from '../utils/logger';
 import UserService from './user.service';
 import IUserSignature from '../interfaces/IUserSignature';
 import BaseErrorClass from '../resources/configurations/classes/BaseErrorClass';
@@ -49,7 +49,7 @@ export default class AuthService {
         });
 
         log.info('Finish AuthService@login method');
-        return { user: userSignature , token: token } as ILoginOutput;
+        return { user: userSignature, token: token } as ILoginOutput;
     }
 
     /**
@@ -64,9 +64,12 @@ export default class AuthService {
             if (!token) {
                 throw new BaseErrorClass(INTERNAL_ERROR_CODES.BAD_REQUEST);
             }
-            const decoded: string | jwt.JwtPayload = jwt.verify(token, this.JWT_SECRET_KEY);
+            const decoded: string | jwt.JwtPayload = jwt.verify(
+                token,
+                this.JWT_SECRET_KEY,
+            );
             (req as IAuthRequest).userSignature = decoded;
-            console.log("AQUI ESTOYYYYYYYYYYYYY", req)
+            console.log('AQUI ESTOYYYYYYYYYYYYY', req);
         } catch (error) {
             log.error('Error AuthService@auth error: ', error);
             throw new BaseErrorClass(INTERNAL_ERROR_CODES.UNAUTHORIZED);

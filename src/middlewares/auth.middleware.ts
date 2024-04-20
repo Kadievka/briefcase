@@ -3,8 +3,11 @@ import AuthService from '../services/auth.service';
 import { handleErrorResponse } from '../resources/configurations/classes/ResponseClass';
 import IResponse from '../interfaces/configurations/IResponse';
 
-
-export const authMiddleware = async (req: Request, res: Response, next: NextFunction) => {
+export const authMiddleware = async (
+    req: Request,
+    res: Response,
+    next: NextFunction,
+) => {
     const authService: AuthService = AuthService.getInstance();
 
     try {
@@ -13,9 +16,9 @@ export const authMiddleware = async (req: Request, res: Response, next: NextFunc
         next();
     } catch (err) {
         let response: IResponse = {
-            statusCode: 500
+            statusCode: 500,
         };
-        handleErrorResponse(err, response)
+        handleErrorResponse(err, response);
         res.status(response.statusCode).send(response);
     }
 };

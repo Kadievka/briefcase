@@ -1,8 +1,7 @@
-import { ILoginInput } from "../interfaces/ILogin";
-import AuthService from "../services/auth.service";
+import { ILoginInput } from '../interfaces/ILogin';
+import AuthService from '../services/auth.service';
 
 export default class AuthController {
-
     public static instance: AuthController;
 
     authService: AuthService = AuthService.getInstance();
@@ -26,6 +25,4 @@ export default class AuthController {
         const request: ILoginInput = { ...req.body };
         return await this.authService.login(request);
     }
-
-
 }

@@ -61,6 +61,4 @@ export default class UserController {
     ): Promise<IUserProfile | undefined> {
         return await this.userService.updateUserByEmail(req.body);
     }
-
-    
 }

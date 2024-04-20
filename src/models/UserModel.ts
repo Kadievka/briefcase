@@ -17,7 +17,9 @@ export default class UserModel implements IUser {
         this.name = user.name;
         this.surname = user.surname;
         this.email = user.email;
-        this.password = isFromDB ? user.password : this.encryptedPassword(user.password);
+        this.password = isFromDB
+            ? user.password
+            : this.encryptedPassword(user.password);
     }
 
     /**
@@ -26,7 +28,7 @@ export default class UserModel implements IUser {
      * @returns {void} it could throw invalid password error
      */
     public validatePassword(enteredPassword: string): void {
-        if(!isMatching(enteredPassword, this.password)){
+        if (!isMatching(enteredPassword, this.password)) {
             throw new BaseErrorClass(INTERNAL_ERROR_CODES.PASSWORD_INVALID);
         }
     }
@@ -40,7 +42,7 @@ export default class UserModel implements IUser {
             email: this.email,
             password: this.password,
             name: this.name,
-            surname: this.surname
+            surname: this.surname,
         };
     }
 

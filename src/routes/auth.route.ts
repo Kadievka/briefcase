@@ -19,5 +19,4 @@ router.post('/login', (req, res) => {
 //     response.send(req, res, ResponseStatus.CREATED, 'logout');
 // });
 
-
 export default router;

@@ -1,4 +1,4 @@
-import IUserSignature from "./IUserSignature";
+import IUserSignature from './IUserSignature';
 
 export interface ILoginInput {
     email: string;

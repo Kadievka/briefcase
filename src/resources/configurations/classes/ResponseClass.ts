@@ -59,8 +59,7 @@ export function handleErrorResponse(err: unknown, response: IResponse) {
             message: err.message,
         };
     } else {
-        response.statusCode =
-            INTERNAL_ERROR_CODES.GENERAL_UNKNOWN.statusCode;
+        response.statusCode = INTERNAL_ERROR_CODES.GENERAL_UNKNOWN.statusCode;
         response.message = e.message
             ? e.message
             : INTERNAL_ERROR_CODES.GENERAL_UNKNOWN.message;
@@ -70,4 +69,3 @@ export function handleErrorResponse(err: unknown, response: IResponse) {
         };
     }
 }
-
