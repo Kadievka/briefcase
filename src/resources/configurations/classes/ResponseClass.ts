@@ -3,7 +3,7 @@ import core from 'express';
 import getLogger from '../../../utils/logger';
 import INTERNAL_ERROR_CODES from '../constants/InternalErrorCodes';
 import IResponseStatus from '../../../interfaces/configurations/IResponseStatus';
-import Response from '../../../interfaces/configurations/IResponse';
+import IResponse from '../../../interfaces/configurations/IResponse';
 
 const log = getLogger('ResponseClass');
 
@@ -30,7 +30,7 @@ export default class ResponseClass {
         method: string,
         message?: string,
     ): Promise<void> {
-        const response: Response = {
+        const response: IResponse = {
             message: message || responseStatus?.message,
             statusCode: responseStatus.statusCode,
         };
@@ -41,28 +41,33 @@ export default class ResponseClass {
         } catch (err) {
             log.error('send method failed with error: ', err);
 
-            const e = err as unknown as Error;
-
-            if (err instanceof BaseErrorClass) {
-                response.statusCode = err.statusCode;
-                response.message = err.message;
-                response.error = {
-                    code: err.code,
-                    message: err.message,
-                };
-            } else {
-                response.statusCode =
-                    INTERNAL_ERROR_CODES.GENERAL_UNKNOWN.statusCode;
-                response.message = e.message
-                    ? e.message
-                    : INTERNAL_ERROR_CODES.GENERAL_UNKNOWN.message;
-                response.error = {
-                    code: INTERNAL_ERROR_CODES.GENERAL_UNKNOWN.code,
-                    message: INTERNAL_ERROR_CODES.GENERAL_UNKNOWN.message,
-                };
-            }
+            handleErrorResponse(err, response);
         }
 
         res.status(response.statusCode).send(response);
     }
 }
+
+export function handleErrorResponse(err: unknown, response: IResponse) {
+    const e = err as unknown as Error;
+
+    if (err instanceof BaseErrorClass) {
+        response.statusCode = err.statusCode;
+        response.message = err.message;
+        response.error = {
+            code: err.code,
+            message: err.message,
+        };
+    } else {
+        response.statusCode =
+            INTERNAL_ERROR_CODES.GENERAL_UNKNOWN.statusCode;
+        response.message = e.message
+            ? e.message
+            : INTERNAL_ERROR_CODES.GENERAL_UNKNOWN.message;
+        response.error = {
+            code: INTERNAL_ERROR_CODES.GENERAL_UNKNOWN.code,
+            message: INTERNAL_ERROR_CODES.GENERAL_UNKNOWN.message,
+        };
+    }
+}
+

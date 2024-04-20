@@ -35,6 +35,8 @@ export default class UserService {
     public async getUsers(): Promise<IUserProfile[]> {
         log.info('Start UserService@getUsers method');
 
+        // TODO: make pagination
+
         const users: IUserProfile[] = [];
 
         try {
@@ -56,7 +58,7 @@ export default class UserService {
                 users.push(userProfile);
             });
 
-            await this.databaseService.disconnect();
+            
         } catch (error) {
             log.error('Error getUsers method', error);
             throw new BaseErrorClass({
@@ -75,33 +77,21 @@ export default class UserService {
      */
     public async createUser(userDto: IUser): Promise<void> {
         log.info('Start UserService@createUser method');
-        let user: IUserProfile;
 
         /* TODO:
             - add validation for required fields
             - add validation for unique email
             - encrypt password
         */
+        const userModel: UserModel = new UserModel(userDto);
 
         try {
             await this.databaseService.connect('users');
             const dbCollection = this.databaseService.collections.users;
 
-            await dbCollection.insertOne(userDto);
-            const dbUser = (await dbCollection.findOne({
-                email: userDto.email,
-            })) as unknown as IUser;
+            await dbCollection.insertOne(userModel.mapUserForDB());
 
-            await this.databaseService.disconnect();
-
-            if (dbUser) {
-                const userModel: UserModel = new UserModel(dbUser);
-                user = userModel.getUserProfile();
-            } else {
-                throw new BaseErrorClass({
-                    ...INTERNAL_ERROR_CODES.USER_NOT_FOUND,
-                });
-            }
+            
         } catch (error) {
             log.error('Error createUser method', error);
             throw new BaseErrorClass({
@@ -123,7 +113,7 @@ export default class UserService {
             const dbCollection = this.databaseService.collections.users;
 
             await dbCollection.deleteMany({ email });
-            await this.databaseService.disconnect();
+            
         } catch (error) {
             log.error('Error deleteUserByEmail method', error);
             throw new BaseErrorClass({
@@ -136,26 +126,48 @@ export default class UserService {
     /**
      * Gets an user by email.
      * @param {string} email The user email
-     * @returns {Promise<IUserProfile>} userProfile The user profile
+     * @returns {Promise<any>} user information comes from the database
      */
-    public async getUserByEmail(email: string): Promise<IUserProfile> {
-        log.info('Start UserService@getUserByEmail method with email: ', email);
-        let user: IUserProfile;
-
+    public async getDbUserByEmail(email: string): Promise<any>{
+        log.info('Start UserService@getDbUserByEmail method with email: ', email);
         let dbUser: any;
         try {
             await this.databaseService.connect('users');
             const dbCollection = this.databaseService.collections.users;
-
             dbUser = await dbCollection.findOne({ email });
-
-            await this.databaseService.disconnect();
         } catch (error) {
-            log.error('Error getUserByEmail method', error);
+            log.error('Error getDbUserByEmail method', error);
             throw new BaseErrorClass({
                 ...INTERNAL_ERROR_CODES.GENERAL_UNKNOWN,
             });
         }
+        log.info('Finish UserService@getDbUserByEmail method');
+        return dbUser;
+    }
+
+    /**
+     * Gets an user by email.
+     * @param {string} email The user email
+     * @returns {Promise<IUserProfile>} userProfile The user profile
+     */
+    public async getUserByEmail(email: string): Promise<IUserProfile> {
+        log.info('Start UserService@getUserByEmail method with email: ', email);
+
+        const dbUser = await this.getDbUserByEmail(email);
+
+        const user: IUserProfile = this.getUserProfile(dbUser);
+    
+        log.info('Finish UserService@getUserByEmail method');
+        return user;
+    }
+
+    /**
+     * Casts a dbUser to a user profile
+     * @param {any} dbUser The user object to update
+     * @returns {Promise<IUserProfile>} user profile
+     */
+    private getUserProfile(dbUser: any): IUserProfile {
+        log.info('Start UserService@getUserProfile method');
         if (!dbUser) {
             throw new BaseErrorClass({
                 ...INTERNAL_ERROR_CODES.USER_NOT_FOUND,
@@ -164,8 +176,41 @@ export default class UserService {
         const userModel: UserModel = new UserModel({
             ...dbUser,
         } as IUser);
-        user = userModel.getUserProfile();
-        log.info('Finish UserService@getUserByEmail method');
-        return user;
+        log.info('Finish UserService@getUserProfile method');
+        return userModel.getUserProfile();
     }
+
+    /**
+     * Updates an user by email.
+     * @param {IUser} userDto The user object to update
+     * @returns {Promise<IUserProfile>} userProfile The updated user profile
+     */
+    public async updateUserByEmail(userDto: IUserProfile): Promise<IUserProfile> {
+        log.info('Start UserService@updateUserByEmail method with email: ', userDto.email);
+        await this.getUserByEmail(userDto.email);
+
+        // TODO add logic to update the email or the password
+
+        let dbUser: any;
+        try {
+            await this.databaseService.connect('users');
+            const dbCollection = this.databaseService.collections.users;
+
+            dbUser = await dbCollection.updateOne({ email: userDto.email }, {
+                name: userDto.name,
+                surname: userDto.surname
+            });
+
+            
+        } catch (error) {
+            log.error('Error updateUserByEmail method', error);
+            throw new BaseErrorClass({
+                ...INTERNAL_ERROR_CODES.GENERAL_UNKNOWN,
+            });
+        }
+
+        log.info('Finish UserService@updateUserByEmail method');
+        return this.getUserProfile(dbUser);
+    }
+
 }

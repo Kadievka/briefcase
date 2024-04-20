@@ -51,4 +51,16 @@ export default class UserController {
     ): Promise<IUserProfile | undefined> {
         return await this.userService.getUserByEmail(req.params.email);
     }
+
+    /**
+     * Calls update user by email service.
+     * @returns Promise<UserProfile | undefined> - user profile or undefined
+     */
+    public async updateUserByEmail(
+        req: core.Request,
+    ): Promise<IUserProfile | undefined> {
+        return await this.userService.updateUserByEmail(req.body);
+    }
+
+    
 }

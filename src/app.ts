@@ -4,6 +4,8 @@ import getLogger from './utils/logger';
 import swaggerJSDoc from 'swagger-jsdoc';
 import swaggerUi from 'swagger-ui-express';
 import userRoutes from './routes/users.route';
+import authRoutes from './routes/auth.route';
+import { authMiddleware } from './middlewares/auth.middleware';
 
 const log = getLogger('app.js');
 
@@ -34,6 +36,10 @@ app.use('/docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
+
+app.use('/auth', authRoutes);
+
+app.use(authMiddleware);
 
 app.use('/users', userRoutes);
 

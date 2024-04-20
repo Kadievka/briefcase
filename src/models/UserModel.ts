@@ -1,5 +1,9 @@
 import IUser from '../interfaces/IUser';
 import IUserProfile from '../interfaces/IUserProfile';
+import IUserSignature from '../interfaces/IUserSignature';
+import BaseErrorClass from '../resources/configurations/classes/BaseErrorClass';
+import INTERNAL_ERROR_CODES from '../resources/configurations/constants/InternalErrorCodes';
+import { encrypt, isMatching } from '../utils/encrypt';
 
 export default class UserModel implements IUser {
     public name: string;
@@ -7,16 +11,51 @@ export default class UserModel implements IUser {
     public email: string;
     public password: string;
 
-    constructor(user: IUser) {
+    private SALT_ROUNDS: number = Number(process.env.PASSWD_SALT_ROUNDS!);
+
+    constructor(user: IUser, isFromDB: boolean = false) {
         this.name = user.name;
         this.surname = user.surname;
         this.email = user.email;
-        this.password = user.password;
+        this.password = isFromDB ? user.password : this.encryptedPassword(user.password);
+    }
+
+    /**
+     * Map user's fields for database
+     * @param {string} enteredPassword The password entered by the user
+     * @returns {void} it could throw invalid password error
+     */
+    public validatePassword(enteredPassword: string): void {
+        if(!isMatching(enteredPassword, this.password)){
+            throw new BaseErrorClass(INTERNAL_ERROR_CODES.PASSWORD_INVALID);
+        }
+    }
+
+    /**
+     * Map user's fields for database
+     * @returns {IUser} User Interface object
+     */
+    public mapUserForDB(): IUser {
+        return {
+            email: this.email,
+            password: this.password,
+            name: this.name,
+            surname: this.surname
+        };
+    }
+
+    /**
+     * Encrypts user's password
+     * @param {string} pass
+     * @returns {string} encrypted password
+     */
+    private encryptedPassword(pass: string): string {
+        return encrypt(this.SALT_ROUNDS, pass);
     }
 
     /**
      * Returns user profile information only.
-     * @returns UserProfile - the user profile data
+     * @returns {UserProfile} - the user profile data
      */
     public getUserProfile(): IUserProfile {
         return {
@@ -24,5 +63,16 @@ export default class UserModel implements IUser {
             name: this.name,
             surname: this.surname,
         } as IUserProfile;
+    }
+
+    /**
+     * Returns user signature for jwt
+     * @returns {IUserSignature} - the user signature
+     */
+    public getUserSignature(): IUserSignature {
+        return {
+            email: this.email,
+            name: this.name,
+        } as IUserSignature;
     }
 }

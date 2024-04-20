@@ -5,7 +5,7 @@ import ResponseClass from '../resources/configurations/classes/ResponseClass';
 
 const router = express.Router();
 
-const userController = UserController.getInstance();
+const userController: UserController = UserController.getInstance();
 
 const response = new ResponseClass(userController);
 
@@ -14,6 +14,7 @@ router.get('/', (req, res) => {
 });
 
 router.post('/', (req, res) => {
+    // TODO add validator
     response.send(req, res, ResponseStatus.CREATED, 'createUser');
 });
 
@@ -23,6 +24,11 @@ router.delete('/', (req, res) => {
 
 router.get('/:email', (req, res) => {
     response.send(req, res, ResponseStatus.OK, 'getUserByEmail');
+});
+
+router.put('/', (req, res) => {
+    // TODO add validator
+    response.send(req, res, ResponseStatus.OK, 'updateUserByEmail');
 });
 
 export default router;
