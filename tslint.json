@@ -11,7 +11,10 @@
         "variable-name": [
             true,
             "allow-leading-underscore"
-        ]
+        ],
+        "object-literal-sort-keys": false,
+        "no-empty": false,
+        "max-line-length": false
     },
     "rulesDirectory": [],
     "trailing-comma": [

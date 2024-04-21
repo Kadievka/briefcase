@@ -11,7 +11,7 @@ export async function deleteUser(
     ).delete(`${baseURL}/users`, {
         data: {
             body: {
-                email: email,
+                email,
             },
         },
     });

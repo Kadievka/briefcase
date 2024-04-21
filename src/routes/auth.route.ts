@@ -2,6 +2,9 @@ import express from 'express';
 import AuthController from '../controllers/auth.controller';
 import ResponseStatus from '../resources/configurations/constants/ResponseStatusCodes';
 import ResponseClass from '../resources/configurations/classes/ResponseClass';
+import getLogger from '../utils/logger';
+
+const log = getLogger('auth.route');
 
 const router = express.Router();
 
@@ -14,9 +17,9 @@ router.post('/login', (req, res) => {
     response.send(req, res, ResponseStatus.OK, 'login');
 });
 
-// router.logout('/logout', (req, res) => {
-//     // TODO add validator
-//     response.send(req, res, ResponseStatus.CREATED, 'logout');
-// });
+router.post('/logout', async (req, res) => {
+    // TODO add validator
+    response.send(req, res, ResponseStatus.OK, 'logout');
+});
 
 export default router;

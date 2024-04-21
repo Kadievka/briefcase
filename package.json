@@ -4,8 +4,8 @@
   "description": "",
   "main": "dist/app.js",
   "scripts": {
-    "start": "tsc && node --env-file=.env dist/app.js",
-    "start:dev": "tsc-watch --noClear -p tsconfig.json --onSuccess \"node --env-file=.env ./dist/app.js\"",
+    "start": "tsc && node --env-file=.env dist/src/app.js",
+    "start:dev": "tsc-watch --noClear -p tsconfig.json --onSuccess \"node --env-file=.env ./dist/src/app.js\"",
     "test": "jest --silent --coverage --collectCoverageFrom='./src/**'",
     "test:w": "jest --watch",
     "test:e2e": "playwright test",
@@ -13,8 +13,9 @@
     "e2e": "cucumber-js -p default",
     "e2e:report": "node --env-file=.env cucumber.report.js",
     "format": "npm run format:prettier",
-    "format:prettier": "prettier --config .prettierrc \"src/**/*.{ts,css,less,scss,js}\" \"tests/**/*.{ts,css,less,scss,js}\" --write",
-    "lint": "tslint --project tsconfig.json"
+    "format:prettier": "prettier --config .prettierrc \"src/**/*.{ts,css,less,scss,js}\" \"tests/**/*.{ts,css,less,scss,js}\" \"scripts/**/*.{ts,css,less,scss,js}\" --write",
+    "lint": "tslint --project tsconfig.json",
+    "script": "tsc && node --env-file=.env dist/scripts/index.js file=$npm_script_name"
   },
   "author": "Kadievka Salcedo",
   "license": "ISC",

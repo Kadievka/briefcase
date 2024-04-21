@@ -37,7 +37,7 @@ export default class UserModel implements IUser {
      * Map user's fields for database
      * @returns {IUser} User Interface object
      */
-    public mapUserForDB(): IUser {
+    public mapForDB(): IUser {
         return {
             email: this.email,
             name: this.name,

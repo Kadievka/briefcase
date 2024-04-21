@@ -25,7 +25,6 @@ describe('UserService Unit Tests', () => {
 
     describe('getUsers', () => {
         it('should return users names', async () => {
-            const userService: UserService = UserService.getInstance();
             const users = await userService.getUsers();
             expect(users.length).toBeGreaterThanOrEqual(4);
         });

@@ -12,13 +12,13 @@ export const authMiddleware = async (
 
     try {
         const token = req.header('Authorization')?.replace('Bearer ', '');
-        authService.auth(req, token);
+        await authService.auth(req, token);
         next();
-    } catch (err) {
+    } catch (error) {
         const response: IResponse = {
             statusCode: 500,
         };
-        handleErrorResponse(err, response);
+        handleErrorResponse(error, response);
         res.status(response.statusCode).send(response);
     }
 };

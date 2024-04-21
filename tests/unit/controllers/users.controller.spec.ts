@@ -4,7 +4,7 @@ import UserService from '../../../src/services/user.service';
 import * as userMocks from '../../../src/resources/mocks/UsersMock';
 import IUser from '../../../src/interfaces/IUser';
 
-const users: IUser[] = [
+const usersMock: IUser[] = [
     userMocks.user1,
     userMocks.user2,
     userMocks.user3,
@@ -39,7 +39,7 @@ describe('UserController Unit Tests', () => {
 
             expect(mockGetUsers).toHaveBeenCalledTimes(1);
             expect(users.length).toBe(4);
-            expect(users).toStrictEqual(users);
+            expect(users).toStrictEqual(usersMock);
         });
     });
 

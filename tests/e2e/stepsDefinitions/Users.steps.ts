@@ -18,7 +18,7 @@ const baseURL =
 let page: Page;
 let browser: Browser;
 let response: any;
-let req: Promise<APIRequestContext> = request.newContext();
+const req: Promise<APIRequestContext> = request.newContext();
 
 const usersMockArray: IUser[] = [
     userMocks.user1,

@@ -58,7 +58,7 @@ export default class UserService {
                 users.push(userProfile);
             });
         } catch (error) {
-            log.error('Error getUsers method', error);
+            log.error('Error UserService@getUsers method', error);
             throw new BaseErrorClass(INTERNAL_ERROR_CODES.GENERAL_UNKNOWN);
         }
 
@@ -84,9 +84,9 @@ export default class UserService {
             await this.databaseService.connect('users');
             const dbCollection = this.databaseService.collections.users;
 
-            await dbCollection.insertOne(userModel.mapUserForDB());
+            await dbCollection.insertOne(userModel.mapForDB());
         } catch (error) {
-            log.error('Error createUser method', error);
+            log.error('Error UserService@createUser method', error);
             throw new BaseErrorClass(INTERNAL_ERROR_CODES.GENERAL_UNKNOWN);
         }
         log.info('Finish UserService@createUser method');
@@ -105,7 +105,7 @@ export default class UserService {
 
             await dbCollection.deleteMany({ email });
         } catch (error) {
-            log.error('Error deleteUserByEmail method', error);
+            log.error('Error UserService@deleteUserByEmail method', error);
             throw new BaseErrorClass(INTERNAL_ERROR_CODES.GENERAL_UNKNOWN);
         }
         log.info('Finish UserService@deleteUserByEmail method');
@@ -127,7 +127,7 @@ export default class UserService {
             const dbCollection = this.databaseService.collections.users;
             dbUser = await dbCollection.findOne({ email });
         } catch (error) {
-            log.error('Error getDbUserByEmail method', error);
+            log.error('Error UserService@getDbUserByEmail method', error);
             throw new BaseErrorClass(INTERNAL_ERROR_CODES.GENERAL_UNKNOWN);
         }
         log.info('Finish UserService@getDbUserByEmail method');
@@ -179,7 +179,7 @@ export default class UserService {
                 },
             );
         } catch (error) {
-            log.error('Error updateUserByEmail method', error);
+            log.error('Error UserService@updateUserByEmail method', error);
             throw new BaseErrorClass(INTERNAL_ERROR_CODES.GENERAL_UNKNOWN);
         }
 

@@ -1,34 +1,15 @@
 import core from 'express';
 import ResponseClass from '../../../../src/resources/configurations/classes/ResponseClass';
 import RESPONSE_STATUS_CODES from '../../../../src/resources/configurations/constants/ResponseStatusCodes';
-import BaseErrorClass from '../../../../src/resources/configurations/classes/BaseErrorClass';
 import { Request } from 'express-serve-static-core';
+import ControllerMockClass from './ControllerMockClass';
+import ControllerMockClassFailing from './ControllerMockClassFailing';
+import ControllerMockClassFailingWithBaseError from './ControllerMockClassFailingWithBaseError';
 
-class ControllerMockClass {
-    async controllerClassMethod() {
-        return {
-            data: 'data',
-        };
-    }
-}
 const controllerMockClass = new ControllerMockClass();
 
-class ControllerMockClassFailing {
-    async methodThrowsWeirdError() {
-        throw new Error();
-    }
-}
 const controllerMockClassFailing = new ControllerMockClassFailing();
 
-class ControllerMockClassFailingWithBaseError {
-    async methodThrowsBaseError() {
-        throw new BaseErrorClass({
-            code: 200,
-            message: 'I am an internal custom error message',
-            statusCode: 500,
-        });
-    }
-}
 const controllerMockClassFailingWithBaseError =
     new ControllerMockClassFailingWithBaseError();
 
