@@ -1,4 +1,5 @@
 import IUser from '../interfaces/IUser';
+import IUserModelInput from '../interfaces/IUserModelInput';
 import IUserProfile from '../interfaces/IUserProfile';
 import IUserSignature from '../interfaces/IUserSignature';
 import BaseErrorClass from '../resources/configurations/classes/BaseErrorClass';
@@ -13,13 +14,13 @@ export default class UserModel implements IUser {
 
     private SALT_ROUNDS: number = Number(process.env.PASSWD_SALT_ROUNDS!);
 
-    constructor(user: IUser, isFromDB: boolean = false) {
+    constructor({user, encryptPassword}: IUserModelInput) {
         this.name = user.name;
         this.surname = user.surname;
         this.email = user.email;
-        this.password = isFromDB
-            ? user.password
-            : this.encryptedPassword(user.password);
+        this.password = encryptPassword
+            ? this.encryptedPassword(user.password)
+            : user.password;
     }
 
     /**

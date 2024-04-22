@@ -10,7 +10,7 @@ import { Given, When, Then } from '@cucumber/cucumber';
 import { chromium, Page } from 'playwright';
 import * as userMocks from '../../../src/resources/mocks/UsersMock';
 import IUser from '../../../src/interfaces/IUser';
-import { deleteUser, createUser } from '../functions/user.functions';
+import { deleteUser, createUser, login, getUsers } from '../functions/user.functions';
 
 const baseURL =
     process.env.PROTOCOL_URL! + process.env.BASE_URL! + process.env.PORT!;
@@ -19,6 +19,7 @@ let page: Page;
 let browser: Browser;
 let response: any;
 const req: Promise<APIRequestContext> = request.newContext();
+let jwt = '';
 
 const usersMockArray: IUser[] = [
     userMocks.user1,
@@ -26,6 +27,16 @@ const usersMockArray: IUser[] = [
     userMocks.user3,
     userMocks.user4,
 ];
+
+Given('my jwt', async () => {
+    if(!jwt){
+        response = await login(req, baseURL, userMocks.user5);
+        console.log("BORRAME", response)
+        const bodyJson = await response?.json();
+        console.log("BORRAME", {bodyJson})
+        // jwt = bodyJson.data.token;
+    }
+});
 
 Given('I am on the home page', async () => {
     browser = await chromium.launch();
@@ -43,7 +54,7 @@ Given('I delete {int} users', async (numberOfUsers: number) => {
 Given('I create {int} users', async (numberOfUsers: number) => {
     const users: IUser[] = usersMockArray.slice(0, numberOfUsers - 1);
     users.forEach(async (user) => {
-        await createUser(req, baseURL, user);
+        await createUser(req, baseURL, user, jwt);
     });
 });
 
@@ -52,16 +63,16 @@ Given('I delete user1', async () => {
 });
 
 When('I use the route get users', async () => {
-    page = await browser.newPage();
-    response = await page.goto(`${baseURL}/users`);
+    response = await getUsers(req, baseURL, jwt);
+    console.log("BORRAME", response);
 });
 
 When('I use the route post users', async () => {
-    response = await createUser(req, baseURL, userMocks.user1);
+    response = await createUser(req, baseURL, userMocks.user1, jwt);
 });
 
 When('I use the route delete users', async () => {
-    response = await deleteUser(req, baseURL, userMocks.user1.email);
+    response = await deleteUser(req, baseURL, userMocks.user1.email, jwt);
 });
 
 When('I use the route get user by email', async () => {

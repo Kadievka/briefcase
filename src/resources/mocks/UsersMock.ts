@@ -1,6 +1,6 @@
 import IUser from '../../interfaces/IUser';
 
-const testPass = '123456789';
+const testPass = '123456';
 
 const user1: IUser = {
     email: 'ana@mail.com',
@@ -30,4 +30,11 @@ const user4: IUser = {
     surname: 'Gutierrez',
 };
 
-export { user1, user2, user3, user4 };
+const user5: IUser = {
+    email: "antonio@gmail.com",
+    name: "antonio",
+    password: testPass,
+    surname: "López"
+};
+
+export { user1, user2, user3, user4, user5 };

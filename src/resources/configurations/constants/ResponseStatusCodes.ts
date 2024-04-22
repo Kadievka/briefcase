@@ -6,7 +6,7 @@ export enum StatusEnum {
     CREATED = 201,
     FORBIDDEN = 403,
     INTERNAL_SERVER_ERROR = 500,
-    NOT_CONTENT = 204,
+    NO_CONTENT = 204,
     NOT_FOUND = 404,
     OK = 200,
     REQUEST_TIMEOUT = 408,
@@ -34,9 +34,9 @@ const RESPONSE_STATUS_CODES: Record<string, IResponseStatus> = {
         message: 'Internal Server Error',
         statusCode: StatusEnum.INTERNAL_SERVER_ERROR,
     },
-    NOT_CONTENT: {
+    NO_CONTENT: {
         message: 'No content',
-        statusCode: StatusEnum.NOT_CONTENT,
+        statusCode: StatusEnum.NO_CONTENT,
     },
     NOT_FOUND: {
         message: 'Not Found',

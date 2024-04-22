@@ -54,6 +54,7 @@
     "@cucumber/pretty-formatter": "^1.0.1",
     "bcryptjs": "^2.4.3",
     "express": "^4.16.4",
+    "joi": "^17.12.3",
     "jsonwebtoken": "^9.0.2",
     "mongodb": "^6.5.0",
     "swagger-jsdoc": "^6.2.8",

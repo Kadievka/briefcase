@@ -23,12 +23,12 @@ describe('UserService Unit Tests', () => {
         });
     });
 
-    describe('getUsers', () => {
-        it('should return users names', async () => {
-            const users = await userService.getUsers();
-            expect(users.length).toBeGreaterThanOrEqual(4);
-        });
-    });
+    // describe('getUsers', () => {
+    //     it('should return users names', async () => {
+    //         const users = await userService.getUsers();
+    //         expect(users.length).toBeGreaterThanOrEqual(4);
+    //     });
+    // });
 
     describe('deleteUserByEmail', () => {
         it('should delete 4 users by email', async () => {

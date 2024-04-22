@@ -114,14 +114,14 @@ describe('ResponseClass Unit Tests', () => {
             expect(result).toBeUndefined();
         });
 
-        it('should use send method with Response Status NOT_CONTENT', async () => {
+        it('should use send method with Response Status NO_CONTENT', async () => {
             const responseClass: ResponseClass = new ResponseClass(
                 controllerMockClass,
             );
             const result = await responseClass.send(
                 reqMock,
                 resMock as unknown as core.Response,
-                RESPONSE_STATUS_CODES.NOT_CONTENT,
+                RESPONSE_STATUS_CODES.NO_CONTENT,
                 'controllerClassMethod',
             );
             expect(result).toBeUndefined();

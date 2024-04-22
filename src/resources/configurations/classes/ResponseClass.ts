@@ -20,7 +20,7 @@ export default class ResponseClass {
      * @param {core.Request} res http response object
      * @param {IResponseStatus} responseStatus message and statusCode
      * @param {string} method The name of the controller's function to be called
-     * @param {string | undefined} message The message to must be displayed
+     * @param {string | undefined} message The message that must be displayed
      * @returns {Promise<void>} void
      */
     public async send(
@@ -44,6 +44,24 @@ export default class ResponseClass {
             handleErrorResponse(err, response);
         }
 
+        res.status(response.statusCode).send(response);
+    }
+
+    /**
+     * Generates bad request response if validator fails.
+     * @param {core.Request} res http response object
+     * @param {string} message The message that must be displayed
+     * @returns {Promise<void>} void
+     */
+    public async sendBadRequest(res: core.Response, message: string): Promise<void> {
+        const response: IResponse = {
+            message: INTERNAL_ERROR_CODES.BAD_REQUEST.message,
+            statusCode: INTERNAL_ERROR_CODES.BAD_REQUEST.statusCode,
+            error: {
+                code: INTERNAL_ERROR_CODES.BAD_REQUEST.code,
+                message: message,
+            }
+        };
         res.status(response.statusCode).send(response);
     }
 }

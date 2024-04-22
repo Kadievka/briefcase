@@ -40,7 +40,12 @@ export default class AuthService {
         log.info('Start AuthService@login method with email: ', user.email);
 
         const dbUser = await this.userService.getDbUserByEmail(user.email);
-        const userModel: UserModel = new UserModel(dbUser, true);
+
+        if(!dbUser) {
+            throw new BaseErrorClass(INTERNAL_ERROR_CODES.BAD_REQUEST)
+        }
+
+        const userModel: UserModel = new UserModel({user: {...dbUser}, encryptPassword: false});
 
         userModel.validatePassword(user.password);
         const userSignature: IUserSignature = userModel.getUserSignature();

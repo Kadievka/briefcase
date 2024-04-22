@@ -3,7 +3,7 @@ import express from 'express';
 import getLogger from './utils/logger';
 import swaggerJSDoc from 'swagger-jsdoc';
 import swaggerUi from 'swagger-ui-express';
-import userRoutes from './routes/users.route';
+import { privateUserRouter, publicUserRouter } from './routes/users.route';
 import authRoutes from './routes/auth.route';
 import { authMiddleware } from './middlewares/auth.middleware';
 
@@ -37,11 +37,11 @@ app.use('/docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 
-app.use('/auth', authRoutes);
+app.use('/', authRoutes);
 
-app.use(authMiddleware);
+app.use('/users', publicUserRouter);
 
-app.use('/users', userRoutes);
+app.use('/users', authMiddleware, privateUserRouter);
 
 app.get('/', (req, res) => {
     res.send('Welcome');

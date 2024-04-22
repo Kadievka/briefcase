@@ -1,6 +1,9 @@
 import core from 'express';
 import IUserProfile from '../interfaces/IUserProfile';
 import UserService from '../services/user.service';
+import IAuthRequest from '../interfaces/IAuthRequest';
+import IUserSignature from '../interfaces/IUserSignature';
+import IPaginationOutput from '../interfaces/configurations/IPaginationOutput';
 
 export default class UserController {
     public static instance: UserController;
@@ -22,15 +25,17 @@ export default class UserController {
      * Calls get users service.
      * @returns users - Array of user's names
      */
-    public async getUsers(_req: any): Promise<IUserProfile[]> {
-        return await this.userService.getUsers();
+    public async getUsers(req: core.Request): Promise<IPaginationOutput> {
+        const page: number = Number(req.query.page);
+        const limit: number = Number(req.query.limit);
+        return await this.userService.getUsers({page, limit});
     }
 
     /**
      * Calls create users service.
      * @returns user
      */
-    public async createUser(req: core.Request): Promise<void> {
+    public async createUser(req: core.Request): Promise<IUserProfile> {
         return await this.userService.createUser(req.body);
     }
 
@@ -49,7 +54,8 @@ export default class UserController {
     public async getUserByEmail(
         req: core.Request,
     ): Promise<IUserProfile | undefined> {
-        return await this.userService.getUserByEmail(req.params.email);
+        const jwtPayload: IUserSignature = (req as IAuthRequest).userSignature as IUserSignature;
+        return await this.userService.getUserByEmail(jwtPayload.email,);
     }
 
     /**
@@ -59,6 +65,7 @@ export default class UserController {
     public async updateUserByEmail(
         req: core.Request,
     ): Promise<IUserProfile | undefined> {
-        return await this.userService.updateUserByEmail(req.body);
+        const jwtPayload: IUserSignature = (req as IAuthRequest).userSignature as IUserSignature;
+        return await this.userService.updateUserByEmail(jwtPayload.email, req.body);
     }
 }
