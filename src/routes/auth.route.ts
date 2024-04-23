@@ -2,7 +2,7 @@ import express from 'express';
 import AuthController from '../controllers/auth.controller';
 import ResponseStatus from '../resources/configurations/constants/ResponseStatusCodes';
 import ResponseClass from '../resources/configurations/classes/ResponseClass';
-import loginValidator from '../validators/auth/login';
+import loginValidator from '../validators/auth/login.validator';
 
 const router = express.Router();
 

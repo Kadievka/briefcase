@@ -4,7 +4,7 @@ import ResponseStatus from '../resources/configurations/constants/ResponseStatus
 import ResponseClass from '../resources/configurations/classes/ResponseClass';
 import createUserValidator from '../validators/users/createUser.validator';
 import updateUserValidator from '../validators/users/updateUser.validator';
-import paginationValidator from '../validators/paginationValidator';
+import paginationValidator from '../validators/pagination.validator';
 
 const userController: UserController = UserController.getInstance();
 const response = new ResponseClass(userController);

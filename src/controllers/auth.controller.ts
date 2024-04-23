@@ -1,4 +1,4 @@
-import { ILoginInput, ILoginOutput } from '../interfaces/ILogin';
+import { ILoginInput } from '../interfaces/ILogin';
 import BaseErrorClass from '../resources/configurations/classes/BaseErrorClass';
 import INTERNAL_ERROR_CODES from '../resources/configurations/constants/InternalErrorCodes';
 import AuthService from '../services/auth.service';
