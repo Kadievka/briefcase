@@ -10,7 +10,12 @@ import { Given, When, Then } from '@cucumber/cucumber';
 import { chromium, Page } from 'playwright';
 import * as userMocks from '../../../src/resources/mocks/UsersMock';
 import IUser from '../../../src/interfaces/IUser';
-import { deleteUser, createUser, login, getUsers } from '../functions/user.functions';
+import {
+    deleteUser,
+    createUser,
+    login,
+    getUsers,
+} from '../functions/user.functions';
 
 const baseURL =
     process.env.PROTOCOL_URL! + process.env.BASE_URL! + process.env.PORT!;
@@ -19,7 +24,7 @@ let page: Page;
 let browser: Browser;
 let response: any;
 const req: Promise<APIRequestContext> = request.newContext();
-let jwt = '';
+const jwt = '';
 
 const usersMockArray: IUser[] = [
     userMocks.user1,
@@ -29,11 +34,9 @@ const usersMockArray: IUser[] = [
 ];
 
 Given('my jwt', async () => {
-    if(!jwt){
+    if (!jwt) {
         response = await login(req, baseURL, userMocks.user5);
-        console.log("BORRAME", response)
         const bodyJson = await response?.json();
-        console.log("BORRAME", {bodyJson})
         // jwt = bodyJson.data.token;
     }
 });
@@ -64,7 +67,6 @@ Given('I delete user1', async () => {
 
 When('I use the route get users', async () => {
     response = await getUsers(req, baseURL, jwt);
-    console.log("BORRAME", response);
 });
 
 When('I use the route post users', async () => {

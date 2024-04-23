@@ -1,6 +1,6 @@
-import IUser from "./IUser";
+import IUser from './IUser';
 
 export default interface IUserModelInput {
-    user: IUser,
-    encryptPassword: boolean,
+    user: IUser;
+    encryptPassword: boolean;
 }

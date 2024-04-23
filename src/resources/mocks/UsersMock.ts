@@ -1,40 +1,24 @@
 import IUser from '../../interfaces/IUser';
+import IPaginationOutput from '../../interfaces/configurations/IPaginationOutput';
 
-const testPass = '123456';
+/* tslint:disable */
+const usersJson = require('../db/Briefcase.users.json') as IUser[];
 
-const user1: IUser = {
-    email: 'ana@mail.com',
-    name: 'Ana',
-    password: testPass,
-    surname: 'Lopez',
+const user1 = usersJson[0];
+const user2 = usersJson[1];
+const user3 = usersJson[2];
+const user4 = usersJson[3];
+const user5 = usersJson[4];
+
+const users = [user1, user2, user3, user4, user5];
+
+const usersPagination: IPaginationOutput = {
+    docs: users,
+    page: 1,
+    pages: 3,
+    limit: 5,
+    skip: 0,
+    total: 12,
 };
 
-const user2: IUser = {
-    email: 'maria@mail.com',
-    name: 'Maria',
-    password: testPass,
-    surname: 'Martinez',
-};
-
-const user3: IUser = {
-    email: 'juan@mail.com',
-    name: 'Juan',
-    password: testPass,
-    surname: 'Perez',
-};
-
-const user4: IUser = {
-    email: 'pedro@mail.com',
-    name: 'Pedro',
-    password: testPass,
-    surname: 'Gutierrez',
-};
-
-const user5: IUser = {
-    email: "antonio@gmail.com",
-    name: "antonio",
-    password: testPass,
-    surname: "López"
-};
-
-export { user1, user2, user3, user4, user5 };
+export { usersJson, user1, user2, user3, user4, user5, users, usersPagination };

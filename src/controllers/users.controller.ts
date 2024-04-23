@@ -28,7 +28,8 @@ export default class UserController {
     public async getUsers(req: core.Request): Promise<IPaginationOutput> {
         const page: number = Number(req.query.page);
         const limit: number = Number(req.query.limit);
-        return await this.userService.getUsers({page, limit});
+
+        return await this.userService.getUsers({ page, limit });
     }
 
     /**
@@ -41,31 +42,35 @@ export default class UserController {
 
     /**
      * Calls delete user by email service.
+     * @param {core.Request} req - Request
      * @returns Promise<void> - void
      */
     public async deleteUser(req: core.Request): Promise<void> {
-        return await this.userService.deleteUserByEmail(req.body.email);
+        const jwtPayload: IUserSignature = (req as IAuthRequest)
+            .userSignature as IUserSignature;
+        return await this.userService.deleteUserByEmail(jwtPayload.email);
     }
 
     /**
      * Calls get user by email service.
      * @returns Promise<UserProfile | undefined> - user profile or undefined
      */
-    public async getUserByEmail(
-        req: core.Request,
-    ): Promise<IUserProfile | undefined> {
-        const jwtPayload: IUserSignature = (req as IAuthRequest).userSignature as IUserSignature;
-        return await this.userService.getUserByEmail(jwtPayload.email,);
+    public async getUserByEmail(req: core.Request): Promise<IUserProfile> {
+        const jwtPayload: IUserSignature = (req as IAuthRequest)
+            .userSignature as IUserSignature;
+        return await this.userService.getUserByEmail(jwtPayload.email);
     }
 
     /**
      * Calls update user by email service.
      * @returns Promise<UserProfile | undefined> - user profile or undefined
      */
-    public async updateUserByEmail(
-        req: core.Request,
-    ): Promise<IUserProfile | undefined> {
-        const jwtPayload: IUserSignature = (req as IAuthRequest).userSignature as IUserSignature;
-        return await this.userService.updateUserByEmail(jwtPayload.email, req.body);
+    public async updateUserByEmail(req: core.Request): Promise<IUserProfile> {
+        const jwtPayload: IUserSignature = (req as IAuthRequest)
+            .userSignature as IUserSignature;
+        return await this.userService.updateUserByEmail(
+            jwtPayload.email,
+            req.body,
+        );
     }
 }

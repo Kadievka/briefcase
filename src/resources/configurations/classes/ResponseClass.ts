@@ -53,14 +53,17 @@ export default class ResponseClass {
      * @param {string} message The message that must be displayed
      * @returns {Promise<void>} void
      */
-    public async sendBadRequest(res: core.Response, message: string): Promise<void> {
+    public async sendBadRequest(
+        res: core.Response,
+        message: string,
+    ): Promise<void> {
         const response: IResponse = {
             message: INTERNAL_ERROR_CODES.BAD_REQUEST.message,
             statusCode: INTERNAL_ERROR_CODES.BAD_REQUEST.statusCode,
             error: {
                 code: INTERNAL_ERROR_CODES.BAD_REQUEST.code,
-                message: message,
-            }
+                message,
+            },
         };
         res.status(response.statusCode).send(response);
     }

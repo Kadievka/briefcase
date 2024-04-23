@@ -6,6 +6,7 @@ module.exports = {
         '<rootDir>/src/routes',
         '<rootDir>/src/app.ts',
         '<rootDir>/tests/e2e',
+        '<rootDir>/dist/*',
     ],
     setupFiles: ['<rootDir>/.jest/setEnvVars.js'],
 };

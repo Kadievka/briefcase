@@ -41,11 +41,14 @@ export default class AuthService {
 
         const dbUser = await this.userService.getDbUserByEmail(user.email);
 
-        if(!dbUser) {
-            throw new BaseErrorClass(INTERNAL_ERROR_CODES.BAD_REQUEST)
+        if (!dbUser) {
+            throw new BaseErrorClass(INTERNAL_ERROR_CODES.BAD_REQUEST);
         }
 
-        const userModel: UserModel = new UserModel({user: {...dbUser}, encryptPassword: false});
+        const userModel: UserModel = new UserModel({
+            user: { ...dbUser },
+            encryptPassword: false,
+        });
 
         userModel.validatePassword(user.password);
         const userSignature: IUserSignature = userModel.getUserSignature();

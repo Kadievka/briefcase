@@ -15,10 +15,7 @@ export default class DatabaseService {
         return this.instance;
     }
 
-    public collections: Record<
-        string,
-        mongoDB.Collection<mongoDB.BSON.Document>
-    > = {};
+    public collections: Record<string, any> = {};
 
     private mongodbClient: mongoDB.MongoClient;
     private db?: mongoDB.Db;

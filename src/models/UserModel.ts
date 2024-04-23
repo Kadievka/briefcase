@@ -14,7 +14,7 @@ export default class UserModel implements IUser {
 
     private SALT_ROUNDS: number = Number(process.env.PASSWD_SALT_ROUNDS!);
 
-    constructor({user, encryptPassword}: IUserModelInput) {
+    constructor({ user, encryptPassword }: IUserModelInput) {
         this.name = user.name;
         this.surname = user.surname;
         this.email = user.email;

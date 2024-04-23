@@ -12,6 +12,8 @@ import IPaginationOutput from '../interfaces/configurations/IPaginationOutput';
 
 const log = getLogger('user.service');
 
+const databaseService: DatabaseService = DatabaseService.getInstance();
+
 export default class UserService {
     public static instance: UserService;
 
@@ -26,18 +28,19 @@ export default class UserService {
         return this.instance;
     }
 
-    public databaseService: DatabaseService;
-
-    constructor() {
-        this.databaseService = DatabaseService.getInstance();
-    }
-
     /**
      * Maps Users to an array of users profiles.
      * @returns { Promise<IUserProfile[]>} Array of user's names
      */
-    public async getUsers({page, limit}: IPaginationInput): Promise<IPaginationOutput> {
-        log.info('Start UserService@getUsers method with queryParams:', page, limit);
+    public async getUsers({
+        page,
+        limit,
+    }: IPaginationInput): Promise<IPaginationOutput> {
+        log.info(
+            'Start UserService@getUsers method with queryParams:',
+            page,
+            limit,
+        );
 
         const offset: number = calculateSkip(page, limit);
 
@@ -46,25 +49,29 @@ export default class UserService {
         let pages: number;
 
         try {
-            await this.databaseService.connect('users');
-            const dbCollection = this.databaseService.collections.users;
+            await databaseService.connect('users');
+            const usersCollection = databaseService.collections.users;
 
-            docs = (await dbCollection
-                .find().project({
+            docs = (await usersCollection
+                .find()
+                .project({
+                    _id: 0,
                     email: 1,
                     name: 1,
-                    password: 1,
-                    surname: 1
-                }).skip(offset).limit(limit)
+                    surname: 1,
+                })
+                .skip(offset)
+                .limit(limit)
                 .toArray()) as unknown as IUser[];
-            
-            total = await dbCollection.countDocuments();
+
+            total = await usersCollection.countDocuments();
             pages = calculatePages(limit, total);
         } catch (error) {
             log.error('Error UserService@getUsers method', error);
             throw new BaseErrorClass(INTERNAL_ERROR_CODES.GENERAL_UNKNOWN);
+        } finally {
+            await databaseService.disconnect();
         }
-
         log.info('Finish UserService@getUsers method');
         return {
             docs,
@@ -72,7 +79,7 @@ export default class UserService {
             pages,
             limit,
             skip: offset,
-            total
+            total,
         };
     }
 
@@ -85,22 +92,24 @@ export default class UserService {
         log.info('Start UserService@createUser method');
 
         const dbUser = await this.getDbUserByEmail(userDto.email);
-        if(dbUser) {
+        if (dbUser) {
             throw new BaseErrorClass(INTERNAL_ERROR_CODES.USER_ALREADY_EXISTS);
         }
         const userModel: UserModel = new UserModel({
             user: userDto,
-            encryptPassword: true
+            encryptPassword: true,
         });
 
         try {
-            await this.databaseService.connect('users');
-            const dbCollection = this.databaseService.collections.users;
+            await databaseService.connect('users');
+            const usersCollection = databaseService.collections.users;
 
-            await dbCollection.insertOne(userModel.mapForDB());
+            await usersCollection.insertOne(userModel.mapForDB());
         } catch (error) {
             log.error('Error UserService@createUser method', error);
             throw new BaseErrorClass(INTERNAL_ERROR_CODES.GENERAL_UNKNOWN);
+        } finally {
+            await databaseService.disconnect();
         }
         log.info('Finish UserService@createUser method');
         return userModel.getUserProfile();
@@ -114,13 +123,15 @@ export default class UserService {
     public async deleteUserByEmail(email: string): Promise<void> {
         log.info('Start UserService@deleteUserByEmail method');
         try {
-            await this.databaseService.connect('users');
-            const dbCollection = this.databaseService.collections.users;
+            await databaseService.connect('users');
+            const usersCollection = databaseService.collections.users;
 
-            await dbCollection.deleteMany({ email });
+            await usersCollection.deleteMany({ email });
         } catch (error) {
             log.error('Error UserService@deleteUserByEmail method', error);
             throw new BaseErrorClass(INTERNAL_ERROR_CODES.GENERAL_UNKNOWN);
+        } finally {
+            await databaseService.disconnect();
         }
         log.info('Finish UserService@deleteUserByEmail method');
     }
@@ -137,12 +148,15 @@ export default class UserService {
         );
         let dbUser: any;
         try {
-            await this.databaseService.connect('users');
-            const dbCollection = this.databaseService.collections.users;
-            dbUser = await dbCollection.findOne({ email });
+            await databaseService.connect('users');
+            const usersCollection = databaseService.collections.users;
+
+            dbUser = await usersCollection.findOne({ email });
         } catch (error) {
             log.error('Error UserService@getDbUserByEmail method', error);
             throw new BaseErrorClass(INTERNAL_ERROR_CODES.GENERAL_UNKNOWN);
+        } finally {
+            await databaseService.disconnect();
         }
         log.info('Finish UserService@getDbUserByEmail method');
         return dbUser;
@@ -188,50 +202,63 @@ export default class UserService {
             user: {
                 name: userDto.name ? userDto.name : dbUser.name,
                 surname: userDto.surname ? userDto.surname : dbUser.surname,
-                email:  isEmailUpdated ? await this.validateEmail( email, dbUser as IUser, userDto.email) : dbUser.email,
-                password: isPasswordUpdated ? userDto.password : dbUser.password
+                email: isEmailUpdated
+                    ? await this.validateEmail(
+                          email,
+                          dbUser as IUser,
+                          userDto.email,
+                      )
+                    : dbUser.email,
+                password: isPasswordUpdated
+                    ? userDto.password
+                    : dbUser.password,
             },
-            encryptPassword: isPasswordUpdated
+            encryptPassword: isPasswordUpdated,
         });
 
         let dbUpdatedResult;
         try {
-            await this.databaseService.connect('users');
-            const dbCollection = this.databaseService.collections.users;
+            await databaseService.connect('users');
+            const usersCollection = databaseService.collections.users;
 
-            dbUpdatedResult = await dbCollection.findOneAndUpdate(
+            dbUpdatedResult = await usersCollection.findOneAndUpdate(
                 { email },
-                { "$set": {...updateData.mapForDB()}},
-                { returnDocument: ReturnDocument.AFTER }
+                { $set: { ...updateData.mapForDB() } },
+                { returnDocument: ReturnDocument.AFTER },
             );
-
         } catch (error) {
             log.error('Error UserService@updateUserByEmail method', error);
             throw new BaseErrorClass(INTERNAL_ERROR_CODES.GENERAL_UNKNOWN);
+        } finally {
+            await databaseService.disconnect();
         }
 
         const userProfile: IUserProfile = new UserModel({
             user: dbUpdatedResult as unknown as IUser,
-            encryptPassword: false
+            encryptPassword: false,
         }).getUserProfile();
 
         log.info('Finish UserService@updateUserByEmail method');
         return userProfile;
     }
-    
-    private async validateEmail(jwtEmail: string, foundUserByJwtEmail: IUser, userDtoEmail: string): Promise<string> {
-        if( jwtEmail !== userDtoEmail ) {
-            const dBUser = await this.getDbUserByEmail(userDtoEmail) as IUser;
 
-            if(!dBUser){
+    private async validateEmail(
+        jwtEmail: string,
+        foundUserByJwtEmail: IUser,
+        userDtoEmail: string,
+    ): Promise<string> {
+        if (jwtEmail !== userDtoEmail) {
+            const dBUser = (await this.getDbUserByEmail(userDtoEmail)) as IUser;
+
+            if (!dBUser) {
                 return userDtoEmail;
             }
 
-            if(
+            if (
                 dBUser.name === foundUserByJwtEmail.name &&
                 dBUser.surname === foundUserByJwtEmail.surname &&
                 dBUser.password === foundUserByJwtEmail.password
-            ){
+            ) {
                 return userDtoEmail;
             }
 
@@ -252,8 +279,8 @@ export default class UserService {
             throw new BaseErrorClass(INTERNAL_ERROR_CODES.USER_NOT_FOUND);
         }
         const userModel: UserModel = new UserModel({
-            user: {...dbUser} as IUser,
-            encryptPassword: false
+            user: { ...dbUser } as IUser,
+            encryptPassword: false,
         });
         log.info('Finish UserService@getUserProfile method');
         return userModel.getUserProfile();

@@ -1,5 +1,5 @@
 export default interface IPaginationOutput {
-    docs: Record<string, any>[],
+    docs: Array<Record<string, any>>;
     limit: number;
     skip: number;
     total: number;

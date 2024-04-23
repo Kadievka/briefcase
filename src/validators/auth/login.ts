@@ -1,7 +1,9 @@
 import Joi from 'joi';
 
-export default function loginValidator(reqBody: any): { validatorFailed: boolean, message: string } {
-
+export default function loginValidator(reqBody: any): {
+    validatorFailed: boolean;
+    message: string;
+} {
     const schema = Joi.object({
         email: Joi.string()
             .email({ minDomainSegments: 2, tlds: { allow: ['com', 'net'] } })
@@ -14,5 +16,8 @@ export default function loginValidator(reqBody: any): { validatorFailed: boolean
 
     const { error } = schema.validate(reqBody);
 
-    return { validatorFailed: Boolean(error), message: error ? error.message : "validation passed" };
+    return {
+        validatorFailed: Boolean(error),
+        message: error ? error.message : 'validation passed',
+    };
 }

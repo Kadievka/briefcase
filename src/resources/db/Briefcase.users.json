@@ -1,0 +1,68 @@
+[{
+  "_id": {
+    "$oid": "6626d4b61c3adc5d3b5b6009"
+  },
+  "email": "joseantonio@gmail.com",
+  "name": "José Antonio",
+  "password": "$2a$12$OClLwgjzEEDylgklxARPke2Nc/kqpjtsR91TFLu9YdGGHEJho3hLi",
+  "surname": "Martinez"
+},
+{
+  "_id": {
+    "$oid": "6626e564f79b2b7b6ef35ce2"
+  },
+  "email": "antonio@gmail.com",
+  "name": "Antonio",
+  "password": "$2a$12$Mg4r.5LsHXeIyj/hKRvmx.7chq04bbJQmQaMUXXsv7ZuKeQDR/sMG",
+  "surname": "López"
+},
+{
+  "email": "antonio1@gmail.com",
+  "name": "Antonio",
+  "surname": "López"
+},
+{
+  "email": "antonio2@gmail.com",
+  "name": "Antonio",
+  "surname": "López"
+},
+{
+  "email": "antonio3@gmail.com",
+  "name": "Antonio",
+  "surname": "López"
+},
+{
+  "email": "antonio4@gmail.com",
+  "name": "Antonio",
+  "surname": "López"
+},
+{
+  "email": "antonio5@gmail.com",
+  "name": "Antonio",
+  "surname": "López"
+},
+{
+  "email": "antonio6@gmail.com",
+  "name": "Antonio",
+  "surname": "López"
+},
+{
+  "email": "antonio7@gmail.com",
+  "name": "Antonio",
+  "surname": "López"
+},
+{
+  "email": "antonio8@gmail.com",
+  "name": "Antonio",
+  "surname": "López"
+},
+{
+  "email": "antonio9@gmail.com",
+  "name": "Antonio",
+  "surname": "López"
+},
+{
+  "email": "antonio10@gmail.com",
+  "name": "Antonio",
+  "surname": "López"
+}]
