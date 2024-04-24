@@ -7,7 +7,6 @@ module.exports = {
         '<rootDir>/src/app.ts',
         '<rootDir>/tests/e2e',
         '<rootDir>/dist/*',
-        '.validator.ts',
     ],
     setupFiles: ['<rootDir>/.jest/setEnvVars.js'],
 };

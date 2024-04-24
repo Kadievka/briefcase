@@ -3,11 +3,7 @@ import AuthService from '../services/auth.service';
 import { handleErrorResponse } from '../resources/configurations/classes/ResponseClass';
 import IResponse from '../interfaces/configurations/IResponse';
 
-export const authMiddleware = async (
-    req: Request,
-    res: Response,
-    next: NextFunction,
-) => {
+export const authMiddleware = async (req: Request, res: Response, next: NextFunction) => {
     const authService: AuthService = AuthService.getInstance();
 
     try {

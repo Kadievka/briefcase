@@ -23,13 +23,7 @@ export default class ResponseClass {
      * @param {string | undefined} message The message that must be displayed
      * @returns {Promise<void>} void
      */
-    public async send(
-        req: core.Request,
-        res: core.Response,
-        responseStatus: IResponseStatus,
-        method: string,
-        message?: string,
-    ): Promise<void> {
+    public async send(req: core.Request, res: core.Response, responseStatus: IResponseStatus, method: string, message?: string): Promise<void> {
         const response: IResponse = {
             message: message || responseStatus?.message,
             statusCode: responseStatus.statusCode,
@@ -53,10 +47,7 @@ export default class ResponseClass {
      * @param {string} message The message that must be displayed
      * @returns {Promise<void>} void
      */
-    public async sendBadRequest(
-        res: core.Response,
-        message: string,
-    ): Promise<void> {
+    public async sendBadRequest(res: core.Response, message: string): Promise<void> {
         const response: IResponse = {
             message: INTERNAL_ERROR_CODES.BAD_REQUEST.message,
             statusCode: INTERNAL_ERROR_CODES.BAD_REQUEST.statusCode,
@@ -69,7 +60,7 @@ export default class ResponseClass {
     }
 }
 
-export function handleErrorResponse(err: unknown, response: IResponse) {
+export function handleErrorResponse(err: unknown, response: IResponse): void {
     const e = err as unknown as Error;
 
     if (err instanceof BaseErrorClass) {
@@ -81,9 +72,7 @@ export function handleErrorResponse(err: unknown, response: IResponse) {
         };
     } else {
         response.statusCode = INTERNAL_ERROR_CODES.GENERAL_UNKNOWN.statusCode;
-        response.message = e.message
-            ? e.message
-            : INTERNAL_ERROR_CODES.GENERAL_UNKNOWN.message;
+        response.message = e.message ? e.message : INTERNAL_ERROR_CODES.GENERAL_UNKNOWN.message;
         response.error = {
             code: INTERNAL_ERROR_CODES.GENERAL_UNKNOWN.code,
             message: INTERNAL_ERROR_CODES.GENERAL_UNKNOWN.message,

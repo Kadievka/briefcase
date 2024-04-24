@@ -1,24 +1,12 @@
 import 'dotenv/config';
-import {
-    APIRequestContext,
-    Browser,
-    expect,
-    request,
-    Response,
-} from '@playwright/test';
+import { APIRequestContext, Browser, expect, request, Response } from '@playwright/test';
 import { Given, When, Then } from '@cucumber/cucumber';
 import { chromium, Page } from 'playwright';
 import * as userMocks from '../../../src/resources/mocks/UsersMock';
 import IUser from '../../../src/interfaces/IUser';
-import {
-    deleteUser,
-    createUser,
-    login,
-    getUsers,
-} from '../functions/user.functions';
+import { deleteUser, createUser, login, getUsers } from '../functions/user.functions';
 
-const baseURL =
-    process.env.PROTOCOL_URL! + process.env.BASE_URL! + process.env.PORT!;
+const baseURL = process.env.PROTOCOL_URL! + process.env.BASE_URL! + process.env.PORT!;
 
 let page: Page;
 let browser: Browser;
@@ -26,12 +14,7 @@ let response: any;
 const req: Promise<APIRequestContext> = request.newContext();
 const jwt = '';
 
-const usersMockArray: IUser[] = [
-    userMocks.user1,
-    userMocks.user2,
-    userMocks.user3,
-    userMocks.user4,
-];
+const usersMockArray: IUser[] = [userMocks.user1, userMocks.user2, userMocks.user3, userMocks.user4];
 
 Given('my jwt', async () => {
     if (!jwt) {
@@ -78,9 +61,7 @@ When('I use the route delete users', async () => {
 });
 
 When('I use the route get user by email', async () => {
-    response = await (
-        await req
-    ).get(`${baseURL}/users/${userMocks.user1.email}`);
+    response = await (await req).get(`${baseURL}/users/${userMocks.user1.email}`);
 });
 
 Then('I should see 4 users', async () => {

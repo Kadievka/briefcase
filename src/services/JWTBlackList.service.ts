@@ -7,6 +7,8 @@ import { ISODate } from '../utils/dates';
 
 const log = getLogger('JWTBlackList.service');
 
+const databaseService = DatabaseService.getInstance();
+
 export default class JWTBlackListService {
     public static instance: JWTBlackListService;
 
@@ -21,15 +23,7 @@ export default class JWTBlackListService {
         return this.instance;
     }
 
-    public databaseService: DatabaseService;
-
-    private JWT_BLACK_LIST_LIFETIME: number = Number(
-        process.env.JWT_BLACK_LIST_LIFETIME!,
-    );
-
-    constructor() {
-        this.databaseService = DatabaseService.getInstance();
-    }
+    private JWT_BLACK_LIST_LIFETIME: number = Number(process.env.JWT_BLACK_LIST_LIFETIME!);
 
     /**
      * Creates a new user.
@@ -47,14 +41,15 @@ export default class JWTBlackListService {
 
         const jwtBlackListModel: JWTBlackListModel = new JWTBlackListModel(jwt);
         try {
-            await this.databaseService.connect('jwt_black_list');
-            const dbCollection =
-                this.databaseService.collections.jwt_black_list;
+            await databaseService.connect('jwt_black_list');
+            const dbCollection = databaseService.collections.jwt_black_list;
 
             await dbCollection.insertOne(jwtBlackListModel.mapForDB());
         } catch (error) {
             log.error('Error JWTBlackListService@registerJWT method', error);
             throw new BaseErrorClass(INTERNAL_ERROR_CODES.GENERAL_UNKNOWN);
+        } finally {
+            await databaseService.disconnect();
         }
         log.info('Finish JWTBlackListService@registerJWT method');
     }
@@ -68,13 +63,14 @@ export default class JWTBlackListService {
         log.info('Start JWTBlackListService@token method with token:', token);
         let dbToken: any;
         try {
-            await this.databaseService.connect('jwt_black_list');
-            const dbCollection =
-                this.databaseService.collections.jwt_black_list;
+            await databaseService.connect('jwt_black_list');
+            const dbCollection = databaseService.collections.jwt_black_list;
             dbToken = await dbCollection.findOne({ jwt: token });
         } catch (error) {
             log.error('Error JWTBlackListService@token method', error);
             throw new BaseErrorClass(INTERNAL_ERROR_CODES.GENERAL_UNKNOWN);
+        } finally {
+            await databaseService.disconnect();
         }
         log.info('Finish JWTBlackListService@token method');
         return Boolean(dbToken);
@@ -83,13 +79,11 @@ export default class JWTBlackListService {
     public async deleteManyJWT(): Promise<void> {
         log.info('Start JWTBlackListService@deleteManyJWT method');
         try {
-            await this.databaseService.connect('jwt_black_list');
-            const dbCollection =
-                this.databaseService.collections.jwt_black_list;
+            await databaseService.connect('jwt_black_list');
+            const dbCollection = databaseService.collections.jwt_black_list;
 
             // current date's milliseconds - 1,000 ms * 60 s * 60 mins * 24 hrs * (# of days beyond one to go back)
-            const daysAgoMilliseconds =
-                Date.now() - 1000 * 60 * 60 * 24 * this.JWT_BLACK_LIST_LIFETIME;
+            const daysAgoMilliseconds = Date.now() - 1000 * 60 * 60 * 24 * this.JWT_BLACK_LIST_LIFETIME;
             const daysAgo: string = ISODate(new Date(daysAgoMilliseconds));
 
             log.info('JWTBlackListService@deleteManyJWT daysAgo:', daysAgo);
@@ -102,6 +96,8 @@ export default class JWTBlackListService {
         } catch (error) {
             log.error('Error JWTBlackListService@deleteManyJWT method', error);
             throw new BaseErrorClass(INTERNAL_ERROR_CODES.GENERAL_UNKNOWN);
+        } finally {
+            await databaseService.disconnect();
         }
         log.info('Finish JWTBlackListService@deleteManyJWT method');
     }

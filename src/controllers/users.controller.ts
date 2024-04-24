@@ -46,8 +46,7 @@ export default class UserController {
      * @returns Promise<void> - void
      */
     public async deleteUser(req: core.Request): Promise<void> {
-        const jwtPayload: IUserSignature = (req as IAuthRequest)
-            .userSignature as IUserSignature;
+        const jwtPayload: IUserSignature = (req as IAuthRequest).userSignature as IUserSignature;
         return await this.userService.deleteUserByEmail(jwtPayload.email);
     }
 
@@ -56,8 +55,7 @@ export default class UserController {
      * @returns Promise<UserProfile | undefined> - user profile or undefined
      */
     public async getUserByEmail(req: core.Request): Promise<IUserProfile> {
-        const jwtPayload: IUserSignature = (req as IAuthRequest)
-            .userSignature as IUserSignature;
+        const jwtPayload: IUserSignature = (req as IAuthRequest).userSignature as IUserSignature;
         return await this.userService.getUserByEmail(jwtPayload.email);
     }
 
@@ -66,11 +64,7 @@ export default class UserController {
      * @returns Promise<UserProfile | undefined> - user profile or undefined
      */
     public async updateUserByEmail(req: core.Request): Promise<IUserProfile> {
-        const jwtPayload: IUserSignature = (req as IAuthRequest)
-            .userSignature as IUserSignature;
-        return await this.userService.updateUserByEmail(
-            jwtPayload.email,
-            req.body,
-        );
+        const jwtPayload: IUserSignature = (req as IAuthRequest).userSignature as IUserSignature;
+        return await this.userService.updateUserByEmail(jwtPayload.email, req.body);
     }
 }

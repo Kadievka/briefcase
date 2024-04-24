@@ -1,12 +1,7 @@
 import { APIRequestContext, APIResponse } from '@playwright/test';
 import IUser from '../../../src/interfaces/IUser';
 
-export async function deleteUser(
-    req: Promise<APIRequestContext>,
-    baseURL: string,
-    email: string,
-    token?: string,
-): Promise<APIResponse> {
+export async function deleteUser(req: Promise<APIRequestContext>, baseURL: string, email: string, token?: string): Promise<APIResponse> {
     return await (
         await req
     ).delete(`${baseURL}/users`, {
@@ -22,11 +17,7 @@ export async function deleteUser(
     });
 }
 
-export async function getUsers(
-    req: Promise<APIRequestContext>,
-    baseURL: string,
-    token?: string,
-): Promise<APIResponse> {
+export async function getUsers(req: Promise<APIRequestContext>, baseURL: string, token?: string): Promise<APIResponse> {
     return await (
         await req
     ).get(`${baseURL}/users`, {
@@ -39,12 +30,7 @@ export async function getUsers(
     });
 }
 
-export async function createUser(
-    req: Promise<APIRequestContext>,
-    baseURL: string,
-    user: IUser,
-    token?: string,
-): Promise<APIResponse> {
+export async function createUser(req: Promise<APIRequestContext>, baseURL: string, user: IUser, token?: string): Promise<APIResponse> {
     return await (
         await req
     ).post(`${baseURL}/users`, {
@@ -60,11 +46,7 @@ export async function createUser(
     });
 }
 
-export async function login(
-    req: Promise<APIRequestContext>,
-    baseURL: string,
-    user: IUser,
-): Promise<APIResponse> {
+export async function login(req: Promise<APIRequestContext>, baseURL: string, user: IUser): Promise<APIResponse> {
     return await (
         await req
     ).post(`${baseURL}/auth/login`, {

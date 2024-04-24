@@ -68,8 +68,7 @@ export default class AuthService {
      */
     public async logout(token: string): Promise<void> {
         log.info('Start AuthService@logout method with logoutInput: ', token);
-        const jwtBlackListService: JWTBlackListService =
-            JWTBlackListService.getInstance();
+        const jwtBlackListService: JWTBlackListService = JWTBlackListService.getInstance();
         await jwtBlackListService.registerJWT(token);
         log.info('Finish AuthService@logout method');
     }
@@ -82,21 +81,18 @@ export default class AuthService {
      */
     public async auth(req: Request, token?: string): Promise<void> {
         log.info('Start AuthService@auth method');
+
+        if (!token) {
+            throw new BaseErrorClass(INTERNAL_ERROR_CODES.BAD_REQUEST);
+        }
+
         try {
-            if (!token) {
-                throw new BaseErrorClass(INTERNAL_ERROR_CODES.BAD_REQUEST);
-            }
-            const decoded: string | jwt.JwtPayload = jwt.verify(
-                token,
-                this.JWT_SECRET_KEY,
-            );
+            const decoded: string | jwt.JwtPayload = jwt.verify(token, this.JWT_SECRET_KEY);
             (req as IAuthRequest).userSignature = decoded;
 
             // It must not be in the JWT Black List
-            const jwtBlackListService: JWTBlackListService =
-                JWTBlackListService.getInstance();
-            const isBlackListed: boolean =
-                await jwtBlackListService.isBlackListed(token);
+            const jwtBlackListService: JWTBlackListService = JWTBlackListService.getInstance();
+            const isBlackListed: boolean = await jwtBlackListService.isBlackListed(token);
 
             if (isBlackListed) {
                 throw new BaseErrorClass(INTERNAL_ERROR_CODES.UNAUTHORIZED);

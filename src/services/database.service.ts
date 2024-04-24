@@ -21,9 +21,7 @@ export default class DatabaseService {
     private db?: mongoDB.Db;
 
     public constructor() {
-        this.mongodbClient = new mongoDB.MongoClient(
-            process.env.MONGODB_CONNECTION_STRING!,
-        );
+        this.mongodbClient = new mongoDB.MongoClient(process.env.MONGODB_CONNECTION_STRING!);
     }
 
     /**
@@ -35,8 +33,7 @@ export default class DatabaseService {
         await this.mongodbClient.connect();
         this.db = this.mongodbClient.db(process.env.MONGODB_DB_NAME!);
 
-        const dbCollection: mongoDB.Collection<mongoDB.BSON.Document> =
-            this.db.collection(collection);
+        const dbCollection: mongoDB.Collection<mongoDB.BSON.Document> = this.db.collection(collection);
         this.collections[collection] = dbCollection;
     }
 

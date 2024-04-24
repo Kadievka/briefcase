@@ -18,9 +18,7 @@ export default class UserModel implements IUser {
         this.name = user.name;
         this.surname = user.surname;
         this.email = user.email;
-        this.password = encryptPassword
-            ? this.encryptedPassword(user.password)
-            : user.password;
+        this.password = encryptPassword ? this.encryptedPassword(user.password) : user.password;
     }
 
     /**

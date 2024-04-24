@@ -32,15 +32,8 @@ export default class UserService {
      * Maps Users to an array of users profiles.
      * @returns { Promise<IUserProfile[]>} Array of user's names
      */
-    public async getUsers({
-        page,
-        limit,
-    }: IPaginationInput): Promise<IPaginationOutput> {
-        log.info(
-            'Start UserService@getUsers method with queryParams:',
-            page,
-            limit,
-        );
+    public async getUsers({ page, limit }: IPaginationInput): Promise<IPaginationOutput> {
+        log.info('Start UserService@getUsers method with queryParams:', page, limit);
 
         const offset: number = calculateSkip(page, limit);
 
@@ -142,10 +135,7 @@ export default class UserService {
      * @returns {Promise<any>} user information comes from the database
      */
     public async getDbUserByEmail(email: string): Promise<any> {
-        log.info(
-            'Start UserService@getDbUserByEmail method with email: ',
-            email,
-        );
+        log.info('Start UserService@getDbUserByEmail method with email: ', email);
         let dbUser: any;
         try {
             await databaseService.connect('users');
@@ -184,14 +174,8 @@ export default class UserService {
      * @param {IUser} userDto The user object to update
      * @returns {Promise<IUserProfile>} userProfile The updated user profile
      */
-    public async updateUserByEmail(
-        email: string,
-        userDto: IUser,
-    ): Promise<IUserProfile> {
-        log.info(
-            'Start UserService@updateUserByEmail method with email: ',
-            email,
-        );
+    public async updateUserByEmail(email: string, userDto: IUser): Promise<IUserProfile> {
+        log.info('Start UserService@updateUserByEmail method with email: ', email);
 
         const dbUser = await this.getDbUserByEmail(email);
 
@@ -202,16 +186,8 @@ export default class UserService {
             user: {
                 name: userDto.name ? userDto.name : dbUser.name,
                 surname: userDto.surname ? userDto.surname : dbUser.surname,
-                email: isEmailUpdated
-                    ? await this.validateEmail(
-                          email,
-                          dbUser as IUser,
-                          userDto.email,
-                      )
-                    : dbUser.email,
-                password: isPasswordUpdated
-                    ? userDto.password
-                    : dbUser.password,
+                email: isEmailUpdated ? await this.validateEmail(email, dbUser as IUser, userDto.email) : dbUser.email,
+                password: isPasswordUpdated ? userDto.password : dbUser.password,
             },
             encryptPassword: isPasswordUpdated,
         });
@@ -221,11 +197,7 @@ export default class UserService {
             await databaseService.connect('users');
             const usersCollection = databaseService.collections.users;
 
-            dbUpdatedResult = await usersCollection.findOneAndUpdate(
-                { email },
-                { $set: { ...updateData.mapForDB() } },
-                { returnDocument: ReturnDocument.AFTER },
-            );
+            dbUpdatedResult = await usersCollection.findOneAndUpdate({ email }, { $set: { ...updateData.mapForDB() } }, { returnDocument: ReturnDocument.AFTER });
         } catch (error) {
             log.error('Error UserService@updateUserByEmail method', error);
             throw new BaseErrorClass(INTERNAL_ERROR_CODES.GENERAL_UNKNOWN);
@@ -242,11 +214,7 @@ export default class UserService {
         return userProfile;
     }
 
-    private async validateEmail(
-        jwtEmail: string,
-        foundUserByJwtEmail: IUser,
-        userDtoEmail: string,
-    ): Promise<string> {
+    private async validateEmail(jwtEmail: string, foundUserByJwtEmail: IUser, userDtoEmail: string): Promise<string> {
         if (jwtEmail !== userDtoEmail) {
             const dBUser = (await this.getDbUserByEmail(userDtoEmail)) as IUser;
 
@@ -254,11 +222,7 @@ export default class UserService {
                 return userDtoEmail;
             }
 
-            if (
-                dBUser.name === foundUserByJwtEmail.name &&
-                dBUser.surname === foundUserByJwtEmail.surname &&
-                dBUser.password === foundUserByJwtEmail.password
-            ) {
+            if (dBUser.name === foundUserByJwtEmail.name && dBUser.surname === foundUserByJwtEmail.surname && dBUser.password === foundUserByJwtEmail.password) {
                 return userDtoEmail;
             }
 

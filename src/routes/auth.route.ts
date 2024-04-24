@@ -12,9 +12,7 @@ const response = new ResponseClass(authController);
 
 router.post('/login', (req, res) => {
     const { validatorFailed, message } = loginValidator(req.body);
-    validatorFailed
-        ? response.sendBadRequest(res, message)
-        : response.send(req, res, ResponseStatus.OK, 'login');
+    validatorFailed ? response.sendBadRequest(res, message) : response.send(req, res, ResponseStatus.OK, 'login');
 });
 
 router.post('/logout', async (req, res) => {

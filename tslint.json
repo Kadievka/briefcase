@@ -28,5 +28,6 @@
                 "typeLiterals": "ignore"
             }
         }
-    ]
+    ],
+    "plugins": ["unused-imports"]
 }

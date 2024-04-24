@@ -13,18 +13,14 @@ const publicUserRouter = express.Router();
 
 publicUserRouter.post('/', (req, res) => {
     const { validatorFailed, message } = createUserValidator(req.body);
-    validatorFailed
-        ? response.sendBadRequest(res, message)
-        : response.send(req, res, ResponseStatus.CREATED, 'createUser');
+    validatorFailed ? response.sendBadRequest(res, message) : response.send(req, res, ResponseStatus.CREATED, 'createUser');
 });
 
 const privateUserRouter = express.Router();
 
 privateUserRouter.get('/', (req, res) => {
     const { validatorFailed, message } = paginationValidator(req.query);
-    validatorFailed
-        ? response.sendBadRequest(res, message)
-        : response.send(req, res, ResponseStatus.OK, 'getUsers');
+    validatorFailed ? response.sendBadRequest(res, message) : response.send(req, res, ResponseStatus.OK, 'getUsers');
 });
 
 privateUserRouter.delete('/', (req, res) => {
@@ -37,9 +33,7 @@ privateUserRouter.get('/profile', (req, res) => {
 
 privateUserRouter.put('/', (req, res) => {
     const { validatorFailed, message } = updateUserValidator(req.body);
-    validatorFailed
-        ? response.sendBadRequest(res, message)
-        : response.send(req, res, ResponseStatus.OK, 'updateUserByEmail');
+    validatorFailed ? response.sendBadRequest(res, message) : response.send(req, res, ResponseStatus.OK, 'updateUserByEmail');
 });
 
 export { publicUserRouter, privateUserRouter };

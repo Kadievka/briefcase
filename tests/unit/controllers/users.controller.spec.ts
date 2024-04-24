@@ -5,7 +5,6 @@ import DatabaseService from '../../../src/services/database.service';
 import UserService from '../../../src/services/user.service';
 import * as userMocks from '../../../src/resources/mocks/UsersMock';
 import IUserProfile from '../../../src/interfaces/IUserProfile';
-import IUserSignature from '../../../src/interfaces/IUserSignature';
 import IAuthRequest from '../../../src/interfaces/IAuthRequest';
 
 const mockEmail: string = 'user_controller@example.com';
@@ -34,9 +33,7 @@ describe('UserController Unit Tests', () => {
 
     describe('getUsers', () => {
         it('should call UserService to get users', async () => {
-            const mockGetUsers = jest
-                .spyOn(userService, 'getUsers')
-                .mockImplementation(async () => usersPagination);
+            const mockGetUsers = jest.spyOn(userService, 'getUsers').mockImplementation(async () => usersPagination);
 
             const userController: UserController = UserController.getInstance();
             const data = await userController.getUsers(mockRequest as any);
@@ -48,15 +45,13 @@ describe('UserController Unit Tests', () => {
 
     describe('createUser', () => {
         it('should call UserService to create an user', async () => {
-            const mockCreateUser = jest
-                .spyOn(userService, 'createUser')
-                .mockImplementation(
-                    async () =>
-                        ({
-                            ...userMocks.user1,
-                            email: mockEmail,
-                        }) as IUserProfile,
-                );
+            const mockCreateUser = jest.spyOn(userService, 'createUser').mockImplementation(
+                async () =>
+                    ({
+                        ...userMocks.user1,
+                        email: mockEmail,
+                    }) as IUserProfile,
+            );
 
             const userController: UserController = UserController.getInstance();
             const user: IUserProfile = await userController.createUser({
@@ -76,15 +71,13 @@ describe('UserController Unit Tests', () => {
 
     describe('deleteUser', () => {
         it('should call UserService to delete an user', async () => {
-            const mockDeleteUser = jest
-                .spyOn(userService, 'deleteUserByEmail')
-                .mockImplementation(async () => {});
+            const mockDeleteUser = jest.spyOn(userService, 'deleteUserByEmail').mockImplementation(async () => {});
 
             const userController: UserController = UserController.getInstance();
             const result: void = await userController.deleteUser({
                 userSignature: {
                     email: mockEmail,
-                    name: 'any name, don\'t care',
+                    name: 'any name, do not care',
                 },
             } as unknown as IAuthRequest);
 
@@ -95,19 +88,17 @@ describe('UserController Unit Tests', () => {
 
     describe('getUserByEmail', () => {
         it('should call UserService to get an user by email', async () => {
-            const mockGetUserByEmail = jest
-                .spyOn(userService, 'getUserByEmail')
-                .mockImplementation(async () => ({
-                    name: userMocks.user1.name,
-                    surname: userMocks.user1.surname,
-                    email: mockEmail,
-                }));
+            const mockGetUserByEmail = jest.spyOn(userService, 'getUserByEmail').mockImplementation(async () => ({
+                name: userMocks.user1.name,
+                surname: userMocks.user1.surname,
+                email: mockEmail,
+            }));
 
             const userController: UserController = UserController.getInstance();
             const user: IUserProfile = await userController.getUserByEmail({
                 userSignature: {
                     email: mockEmail,
-                    name: 'any name, don\'t care',
+                    name: 'any name, do not care',
                 },
             } as unknown as IAuthRequest);
 
@@ -120,19 +111,17 @@ describe('UserController Unit Tests', () => {
 
     describe('updateUserByEmail', () => {
         it('should call UserService to get an user by email', async () => {
-            const mockUpdateUserByEmail = jest
-                .spyOn(userService, 'updateUserByEmail')
-                .mockImplementation(async () => ({
-                    name: 'edited name',
-                    surname: 'edited surname',
-                    email: 'edited_email@mail.com',
-                }));
+            const mockUpdateUserByEmail = jest.spyOn(userService, 'updateUserByEmail').mockImplementation(async () => ({
+                name: 'edited name',
+                surname: 'edited surname',
+                email: 'edited_email@mail.com',
+            }));
 
             const userController: UserController = UserController.getInstance();
             const user: IUserProfile = await userController.updateUserByEmail({
                 userSignature: {
                     email: mockEmail,
-                    name: 'any name, don\'t care',
+                    name: 'any name, do not care',
                 },
                 body: {
                     name: 'edited name',

@@ -32,10 +32,8 @@ export default class AuthController {
      * Calls get users service.
      * @returns users - Array of user's names
      */
-    public async logout(req: any): Promise<any> {
-        const token: string = req
-            .header('Authorization')
-            ?.replace('Bearer ', '');
+    public async logout(req: any): Promise<void> {
+        const token: string = req.header('Authorization')?.replace('Bearer ', '');
         if (!token) {
             throw new BaseErrorClass(INTERNAL_ERROR_CODES.UNAUTHORIZED);
         }

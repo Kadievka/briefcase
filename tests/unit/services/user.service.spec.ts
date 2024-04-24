@@ -1,16 +1,10 @@
 import UserService from '../../../src/services/user.service';
 import IPaginationOutput from '../../../src/interfaces/configurations/IPaginationOutput';
 import IUserProfile from '../../../src/interfaces/IUserProfile';
-import DatabaseService from '../../../src/services/database.service';
 
 const userService: UserService = UserService.getInstance();
-const databaseService: DatabaseService = DatabaseService.getInstance();
 
 describe('UserService Unit Tests', () => {
-    // afterAll(() => {
-    //     databaseService.disconnect();
-    // });
-
     describe('getInstance', () => {
         it('should return an instance of UserService', () => {
             expect(userService).toBeInstanceOf(UserService);
@@ -20,15 +14,11 @@ describe('UserService Unit Tests', () => {
     describe('deleteUserByEmail', () => {
         it('should delete 8 users by email', async () => {
             for (let i = 0; i < 4; i++) {
-                const result = await userService.deleteUserByEmail(
-                    'test@email' + i + '.com',
-                );
+                const result = await userService.deleteUserByEmail('test@email' + i + '.com');
                 expect(result).toBeUndefined();
             }
             for (let i = 0; i < 4; i++) {
-                const result = await userService.deleteUserByEmail(
-                    'edited_test@email' + i + '.com',
-                );
+                const result = await userService.deleteUserByEmail('edited_test@email' + i + '.com');
                 expect(result).toBeUndefined();
             }
         });
@@ -60,10 +50,7 @@ describe('UserService Unit Tests', () => {
                 });
                 expect(userProfile).toHaveProperty('name', 'test name');
                 expect(userProfile).toHaveProperty('surname', 'test surname');
-                expect(userProfile).toHaveProperty(
-                    'email',
-                    'test@email' + i + '.com',
-                );
+                expect(userProfile).toHaveProperty('email', 'test@email' + i + '.com');
             }
         });
     });
@@ -71,16 +58,10 @@ describe('UserService Unit Tests', () => {
     describe('getDbUserByEmail', () => {
         it('should get one user by email 4 times', async () => {
             for (let i = 0; i < 4; i++) {
-                const userProfile: IUserProfile =
-                    await userService.getDbUserByEmail(
-                        'test@email' + i + '.com',
-                    );
+                const userProfile: IUserProfile = await userService.getDbUserByEmail('test@email' + i + '.com');
                 expect(userProfile).toHaveProperty('name', 'test name');
                 expect(userProfile).toHaveProperty('surname', 'test surname');
-                expect(userProfile).toHaveProperty(
-                    'email',
-                    'test@email' + i + '.com',
-                );
+                expect(userProfile).toHaveProperty('email', 'test@email' + i + '.com');
             }
         });
     });
@@ -88,25 +69,15 @@ describe('UserService Unit Tests', () => {
     describe('updateUserByEmail', () => {
         it('should update one user by email 4 times', async () => {
             for (let i = 0; i < 4; i++) {
-                const userProfile: IUserProfile =
-                    await userService.updateUserByEmail(
-                        'test@email' + i + '.com',
-                        {
-                            name: 'Edited test name',
-                            surname: 'Edited test surname',
-                            email: 'edited_test@email' + i + '.com',
-                            password: '123456789',
-                        },
-                    );
+                const userProfile: IUserProfile = await userService.updateUserByEmail('test@email' + i + '.com', {
+                    name: 'Edited test name',
+                    surname: 'Edited test surname',
+                    email: 'edited_test@email' + i + '.com',
+                    password: '123456789',
+                });
                 expect(userProfile).toHaveProperty('name', 'Edited test name');
-                expect(userProfile).toHaveProperty(
-                    'surname',
-                    'Edited test surname',
-                );
-                expect(userProfile).toHaveProperty(
-                    'email',
-                    'edited_test@email' + i + '.com',
-                );
+                expect(userProfile).toHaveProperty('surname', 'Edited test surname');
+                expect(userProfile).toHaveProperty('email', 'edited_test@email' + i + '.com');
             }
         });
     });

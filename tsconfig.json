@@ -10,6 +10,8 @@
     "rootDir": "./",
     "strict": true,
     "forceConsistentCasingInFileNames": true,
+    "noUnusedLocals": true,
+    "noUnusedParameters": true
   },
   "include": ["./**/*.ts"],
   "exclude": [
