@@ -8,7 +8,8 @@ export async function deleteUser(req: Promise<APIRequestContext>, baseURL: strin
         data: {
             header: {
                 'Content-Type': 'application/json',
-                'authorization': `Bearer ${token}`,
+                /* tslint:disable */
+                authorization: `Bearer ${token}`,
             },
             body: {
                 email,
@@ -24,7 +25,8 @@ export async function getUsers(req: Promise<APIRequestContext>, baseURL: string,
         data: {
             header: {
                 'Content-Type': 'application/json',
-                'authorization': `Bearer ${token}`,
+                /* tslint:disable */
+                authorization: `Bearer ${token}`,
             },
         },
     });
@@ -37,7 +39,8 @@ export async function createUser(req: Promise<APIRequestContext>, baseURL: strin
         data: {
             header: {
                 'Content-Type': 'application/json',
-                'authorization': `Bearer ${token}`,
+                /* tslint:disable */
+                authorization: `Bearer ${token}`,
             },
             body: {
                 ...user,

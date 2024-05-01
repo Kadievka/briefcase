@@ -42,7 +42,7 @@ export default class AuthService {
         const dbUser = await this.userService.getDbUserByEmail(user.email);
 
         if (!dbUser) {
-            throw new BaseErrorClass(INTERNAL_ERROR_CODES.BAD_REQUEST);
+            throw new BaseErrorClass(INTERNAL_ERROR_CODES.USER_NOT_FOUND);
         }
 
         const userModel: UserModel = new UserModel({
@@ -80,10 +80,10 @@ export default class AuthService {
      * @returns {void} validates jwt
      */
     public async auth(req: Request, token?: string): Promise<void> {
-        log.info('Start AuthService@auth method');
+        log.info('Start AuthService@auth method with token: ', token);
 
         if (!token) {
-            throw new BaseErrorClass(INTERNAL_ERROR_CODES.BAD_REQUEST);
+            throw new BaseErrorClass(INTERNAL_ERROR_CODES.UNAUTHORIZED);
         }
 
         try {

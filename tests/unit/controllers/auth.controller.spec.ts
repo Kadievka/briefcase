@@ -57,19 +57,19 @@ describe('AuthController Unit Tests', () => {
         });
 
         it('should throw error if authorization header does not returns a token', async () => {
-            const mockLogout = jest.spyOn(authService, 'logout').mockImplementation(async () => {});
-
             const authController: AuthController = AuthController.getInstance();
-
-            expect(mockLogout).toHaveBeenCalledTimes(1);
 
             await expect(
                 authController.logout({
                     header: () => {},
                 }),
             ).rejects.toMatchObject({
+                code: 4002,
                 message: 'Please authenticate',
-                statusCode: 401,
+                responseStatus: {
+                    message: 'Unauthorized',
+                    statusCode: 401,
+                },
             });
         });
     });

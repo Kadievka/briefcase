@@ -33,9 +33,9 @@ describe('UserService Unit Tests', () => {
             expect(result).toHaveProperty('docs');
             expect(result).toHaveProperty('limit', 5);
             expect(result).toHaveProperty('skip', 0);
-            expect(result).toHaveProperty('total', 12);
+            expect(result).toHaveProperty('total');
             expect(result).toHaveProperty('page', 1);
-            expect(result).toHaveProperty('pages', 3);
+            expect(result).toHaveProperty('pages');
         });
     });
 

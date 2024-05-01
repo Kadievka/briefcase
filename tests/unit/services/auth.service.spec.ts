@@ -34,19 +34,19 @@ describe('AuthService Unit Tests', () => {
             expect(result.user).toHaveProperty('name', 'Antonio');
         });
 
-        it('should throw error bad request', async () => {
+        it('should throw error user not found', async () => {
             await expect(
                 authService.login({
                     email: 'antonio_no_exists@gmail.com',
                     password: '123456',
                 }),
-            ).rejects.toMatchObject(INTERNAL_ERROR_CODES.BAD_REQUEST);
+            ).rejects.toMatchObject(INTERNAL_ERROR_CODES.USER_NOT_FOUND);
         });
     });
 
     describe('auth', () => {
         it('should throw error if there is not token', async () => {
-            await expect(authService.auth(mockReq)).rejects.toMatchObject(INTERNAL_ERROR_CODES.BAD_REQUEST);
+            await expect(authService.auth(mockReq)).rejects.toMatchObject(INTERNAL_ERROR_CODES.UNAUTHORIZED);
         });
 
         it('should authorize an user if logins', async () => {

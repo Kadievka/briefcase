@@ -1,5 +1,7 @@
+import IResponseStatus from './IResponseStatus';
+
 export default interface IBaseError {
     code: number;
     message: string;
-    statusCode: number;
+    responseStatus: IResponseStatus;
 }

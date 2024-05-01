@@ -49,11 +49,11 @@ export default class ResponseClass {
      */
     public async sendBadRequest(res: core.Response, message: string): Promise<void> {
         const response: IResponse = {
-            message: INTERNAL_ERROR_CODES.BAD_REQUEST.message,
-            statusCode: INTERNAL_ERROR_CODES.BAD_REQUEST.statusCode,
+            message: INTERNAL_ERROR_CODES.BAD_REQUEST.responseStatus.message,
+            statusCode: INTERNAL_ERROR_CODES.BAD_REQUEST.responseStatus.statusCode,
             error: {
                 code: INTERNAL_ERROR_CODES.BAD_REQUEST.code,
-                message,
+                message: message ? message : INTERNAL_ERROR_CODES.BAD_REQUEST.message,
             },
         };
         res.status(response.statusCode).send(response);
@@ -64,15 +64,15 @@ export function handleErrorResponse(err: unknown, response: IResponse): void {
     const e = err as unknown as Error;
 
     if (err instanceof BaseErrorClass) {
-        response.statusCode = err.statusCode;
-        response.message = err.message;
+        response.statusCode = err.responseStatus.statusCode;
+        response.message = err.responseStatus.message;
         response.error = {
             code: err.code,
             message: err.message,
         };
     } else {
-        response.statusCode = INTERNAL_ERROR_CODES.GENERAL_UNKNOWN.statusCode;
-        response.message = e.message ? e.message : INTERNAL_ERROR_CODES.GENERAL_UNKNOWN.message;
+        response.statusCode = INTERNAL_ERROR_CODES.GENERAL_UNKNOWN.responseStatus.statusCode;
+        response.message = e.message ? e.message : INTERNAL_ERROR_CODES.GENERAL_UNKNOWN.responseStatus.message;
         response.error = {
             code: INTERNAL_ERROR_CODES.GENERAL_UNKNOWN.code,
             message: INTERNAL_ERROR_CODES.GENERAL_UNKNOWN.message,

@@ -43,7 +43,7 @@ app.use('/users', publicUserRouter);
 
 app.use('/users', authMiddleware, privateUserRouter);
 
-app.get('/', (req, res) => {
+app.get('/', (_req, res) => {
     res.send('Welcome');
 });
 

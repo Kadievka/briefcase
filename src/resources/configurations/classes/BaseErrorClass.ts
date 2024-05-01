@@ -1,14 +1,15 @@
-import BaseError from '../../../interfaces/configurations/IBaseError';
+import IBaseError from '../../../interfaces/configurations/IBaseError';
+import IResponseStatus from '../../../interfaces/configurations/IResponseStatus';
 
-export default class BaseErrorClass extends Error implements BaseError {
+export default class BaseErrorClass extends Error implements IBaseError {
     public code: number;
     public message: string;
-    public statusCode: number;
+    public responseStatus: IResponseStatus;
 
-    constructor(baseError: BaseError) {
+    constructor(baseError: IBaseError) {
         super();
         this.code = baseError.code;
         this.message = baseError.message;
-        this.statusCode = baseError.statusCode;
+        this.responseStatus = baseError.responseStatus;
     }
 }
