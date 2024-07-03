@@ -1,58 +1,58 @@
-import ResponseStatusInterface from '../../../interfaces/configurations/ResponseStatus';
+import IResponseStatus from '../../../interfaces/configurations/IResponseStatus';
 
 export enum StatusEnum {
-    OK = 200,
-    CREATED = 201,
     ACCEPTED = 202,
-    NO_CONTENT = 204,
     BAD_REQUEST = 400,
-    UNAUTHORIZED = 401,
+    CREATED = 201,
     FORBIDDEN = 403,
-    NOT_FOUND = 404,
-    REQUEST_TIMEOUT = 408,
     INTERNAL_SERVER_ERROR = 500,
+    NO_CONTENT = 204,
+    NOT_FOUND = 404,
+    OK = 200,
+    REQUEST_TIMEOUT = 408,
+    UNAUTHORIZED = 401,
 }
 
-const RESPONSE_STATUS_CODES: Record<string, ResponseStatusInterface> = {
-    OK: {
-        statusCode: StatusEnum.OK,
-        message: 'Ok',
-    },
-    CREATED: {
-        statusCode: StatusEnum.CREATED,
-        message: 'Created successfully',
-    },
+const RESPONSE_STATUS_CODES: Record<string, IResponseStatus> = {
     ACCEPTED: {
-        statusCode: StatusEnum.ACCEPTED,
         message: 'Accepted successfully',
-    },
-    NO_CONTENT: {
-        statusCode: StatusEnum.NO_CONTENT,
-        message: 'No content',
+        statusCode: StatusEnum.ACCEPTED,
     },
     BAD_REQUEST: {
-        statusCode: StatusEnum.BAD_REQUEST,
         message: 'Bad request',
+        statusCode: StatusEnum.BAD_REQUEST,
     },
-    UNAUTHORIZED: {
-        statusCode: StatusEnum.UNAUTHORIZED,
-        message: 'Unauthorized',
+    CREATED: {
+        message: 'Created successfully',
+        statusCode: StatusEnum.CREATED,
     },
     FORBIDDEN: {
-        statusCode: StatusEnum.FORBIDDEN,
         message: 'Forbidden',
-    },
-    NOT_FOUND: {
-        statusCode: StatusEnum.NOT_FOUND,
-        message: 'Not Found',
-    },
-    REQUEST_TIMEOUT: {
-        statusCode: StatusEnum.REQUEST_TIMEOUT,
-        message: 'Request Timeout',
+        statusCode: StatusEnum.FORBIDDEN,
     },
     INTERNAL_SERVER_ERROR: {
-        statusCode: StatusEnum.INTERNAL_SERVER_ERROR,
         message: 'Internal Server Error',
+        statusCode: StatusEnum.INTERNAL_SERVER_ERROR,
+    },
+    NO_CONTENT: {
+        message: 'No content',
+        statusCode: StatusEnum.NO_CONTENT,
+    },
+    NOT_FOUND: {
+        message: 'Not Found',
+        statusCode: StatusEnum.NOT_FOUND,
+    },
+    OK: {
+        message: 'Ok',
+        statusCode: StatusEnum.OK,
+    },
+    REQUEST_TIMEOUT: {
+        message: 'Request Timeout',
+        statusCode: StatusEnum.REQUEST_TIMEOUT,
+    },
+    UNAUTHORIZED: {
+        message: 'Unauthorized',
+        statusCode: StatusEnum.UNAUTHORIZED,
     },
 };
 

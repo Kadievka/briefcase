@@ -1,41 +1,52 @@
-// Swagger imports
-import swaggerUi from 'swagger-ui-express';
-import swaggerJSDoc from 'swagger-jsdoc';
-
-// APP imports
+import bodyParser from 'body-parser';
 import express from 'express';
+import getLogger from './utils/logger';
+import swaggerJSDoc from 'swagger-jsdoc';
+import swaggerUi from 'swagger-ui-express';
+import { privateUserRouter, publicUserRouter } from './routes/users.route';
+import authRoutes from './routes/auth.route';
+import { authMiddleware } from './middlewares/auth.middleware';
+
+const log = getLogger('app.js');
+
+/*--- App ---*/
 const app = express();
 const port = process.env.PORT;
 
-// Swagger
+/*--- Swagger ---*/
 const swaggerDefinition = {
-    "openapi": "3.0.3",
-    "info": {
-        "version": "1.0.0",
-        "title": "Briefcase",
-        "description": "My project briefcase"
+    basePath: '/',
+    host: 'localhost:3000',
+    info: {
+        description: 'My project briefcase',
+        title: 'Briefcase',
+        version: '1.0.0',
     },
-    "schemes": ["http"],
-    "host": "localhost:3000",
-    "basePath": "/"
+    openapi: '3.0.3',
+    schemes: ['http'],
 };
-
 const options = {
+    apis: ['./src/docs/**/*.yaml'],
     swaggerDefinition,
-    apis: ['./src/docs/**/*.yaml'], // path to the API docs
 };
-
 const swaggerSpec = swaggerJSDoc(options);
 
 // APP
 app.use('/docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 
-app.use('/users', require('./routes/users'));
+app.use(bodyParser.urlencoded({ extended: true }));
+app.use(bodyParser.json());
 
-app.get('/', function (req, res) {
+app.use('/', authRoutes);
+
+app.use('/users', publicUserRouter);
+
+app.use('/users', authMiddleware, privateUserRouter);
+
+app.get('/', (_req, res) => {
     res.send('Welcome');
 });
 
-app.listen(port, function () {
-    console.log(`Briefcase app listening on port ${port}!`);
+app.listen(port, () => {
+    log.info(() => `Briefcase app listen on port ${port}!`);
 });

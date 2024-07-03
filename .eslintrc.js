@@ -6,9 +6,10 @@ module.exports = {
         project: './tsconfig.json',
         tsconfigRootDir: __dirname,
         ecmaVersion: es2022,
-        sourceType: 'module'
+        sourceType: 'module',
     },
     rules: {
-        'tsdoc/syntax': 'warn'
-    }
+        'tsdoc/syntax': 'warn',
+    },
+    commaDangle: 'always',
 };
